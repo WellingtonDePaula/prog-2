@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<h1>Bem vindo ao site de notas</h1>
+
+<p>Aqui você pode ver as notas de todos os usuarios.</p>
+<p>Se você tiver uma conta, pode adicionar, editar e remover suas próprias notas.</p>
+
+{% if not logado %}
+    <p><a href="/login">Faça login</a> ou <a href="/cadastro">crie uma conta</a> para começar.</p>
+{% endif %}
+
+{% endblock %}

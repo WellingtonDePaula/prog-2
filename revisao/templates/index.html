@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<div class="container">
+    <h1>🍽️ Faça seu Pedido</h1>
+    <span > {{aviso}}</span>
+    <form action="/" method="POST">
+        {{ form.hidden_tag() }}
+                
+        <div style="margin-bottom: 20px;">
+            <label style="font-weight: bold;">{{ form.mesa.label }}</label><br>
+            {{ form.mesa(style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc;") }}
+            
+            {% if form.mesa.errors %}
+                {% for erro in form.mesa.errors %}
+                    <span class="erro-alerta">⚠ {{ erro }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="font-weight: bold;">{{ form.descricao.label }}</label><br>
+            {{ form.descricao(style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc;") }}
+            
+            {% if form.descricao.errors %}
+                {% for erro in form.descricao.errors %}
+                    <span class="erro-alerta">⚠ {{ erro }}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+        
+        <div style="text-align: center;">
+            {{ form.submit(class_="botao", style="width: 50%; font-size: 1.1em;") }}
+        </div>
+    </form>
+    {%if pedidos%}
+    <lu>
+        {%for p in pedidos%}
+        <li>{{p.mesa}}-{{p.descricao}}</li>
+        {%endfor%}
+    </lu>
+    {% endif %}
+</div>
+
+{% endblock %}

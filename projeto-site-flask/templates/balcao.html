@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+<div class="container">
+    <h1>🍽️ Balcão</h1>
+    <ul>
+    {% for pedido in pedidos %}
+        <li>{{ loop.index }} - Mesa: {{ pedido.mesa}} -> Prato: {{ pedido.prato |upper}}</li>
+    {% else %}
+        <li>Não existe nenhum pedido.</li>
+    {% endfor %} 
+    </ul>
+</div>
+{% endblock %}

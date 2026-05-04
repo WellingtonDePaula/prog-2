@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<h1>Cadastro</h1>
+
+{% if erro %}
+    <p class="mensagem-erro">{{ erro }}</p>
+{% endif %}
+
+<form method="post" action="/cadastro">
+    {{ form.hidden_tag() }}
+
+    <div class="campo">
+        <label>{{ form.usuario.label }}</label><br>
+        {{ form.usuario(style="width: 300px;") }}
+        {% for e in form.usuario.errors %}
+            <span class="erro-alerta">⚠ {{ e }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="campo">
+        <label>{{ form.senha.label }}</label><br>
+        {{ form.senha(style="width: 300px;") }}
+        {% for e in form.senha.errors %}
+            <span class="erro-alerta">⚠ {{ e }}</span>
+        {% endfor %}
+    </div>
+
+    {{ form.submit(class_="botao") }}
+</form>
+
+<p>Já tem conta? <a href="/login">Faça login</a></p>
+
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+{% if logado %}
+
+    <h2>Adicionar nota</h2>
+    <form method="post" action="/receber_nota">
+        {{ form_adicionar.hidden_tag() }}
+
+        <div class="campo">
+            <label>{{ form_adicionar.valor.label }}</label><br>
+            {{ form_adicionar.valor(style="width: 200px;") }}
+            {% for e in form_adicionar.valor.errors %}
+                <span class="erro-alerta">⚠ {{ e }}</span>
+            {% endfor %}
+        </div>
+
+        {{ form_adicionar.submit(class_="botao") }}
+    </form>
+
+    <br>
+
+    <h2>Editar nota</h2>
+    <form method="post" action="/editar_nota">
+        {{ form_editar.hidden_tag() }}
+
+        <div class="campo">
+            <label>{{ form_editar.id.label }}</label><br>
+            {{ form_editar.id(style="width: 200px;") }}
+            {% for e in form_editar.id.errors %}
+                <span class="erro-alerta">⚠ {{ e }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="campo">
+            <label>{{ form_editar.valor.label }}</label><br>
+            {{ form_editar.valor(style="width: 200px;") }}
+            {% for e in form_editar.valor.errors %}
+                <span class="erro-alerta">⚠ {{ e }}</span>
+            {% endfor %}
+        </div>
+
+        {{ form_editar.submit(class_="botao") }}
+    </form>
+
+    <br>
+
+    <h2>Remover nota</h2>
+    <form method="post" action="/remover_nota">
+        {{ form_remover.hidden_tag() }}
+
+        <div class="campo">
+            <label>{{ form_remover.id.label }}</label><br>
+            {{ form_remover.id(style="width: 200px;") }}
+            {% for e in form_remover.id.errors %}
+                <span class="erro-alerta">⚠ {{ e }}</span>
+            {% endfor %}
+        </div>
+
+        {{ form_remover.submit(class_="botao", style="background-color: #e74c3c;") }}
+    </form>
+
+    <hr>
+
+{% else %}
+    <p>Faça <a href="/login">login</a> para gerenciar suas notas.</p>
+{% endif %}
+
+<h1>Notas dos usuarios</h1>
+
+{% for usuario in usuarios %}
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+        <h3>{{ usuario.usuario }}</h3>
+        <table border="1" cellpadding="5" cellspacing="0">
+        {% if usuario %}
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for nota in notas %}
+                    {% if nota.usuario.id == usuario.id%}
+                    <tr>
+                        <td>{{ nota.id }}</td>
+                        <td>{{ nota.valor }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            
+        {% else %}
+            <p>Nenhuma nota ainda.</p>
+        {% endif %}
+        </table>
+    </div>
+{% endfor %}
+
+{% endblock %}

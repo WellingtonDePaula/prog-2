@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+    <h1>🍽️ Lista de Pedidos</h1>
+    <ul>
+        {% for pedido in pedidos %}
+            <li>{{ loop.index }} - Mesa: {{ pedido.mesa}} -> Prato: {{ pedido.prato |upper}}</li>
+        {% else %}
+            <li>Não existe nenhum pedido.</li>
+        {% endfor %} 
+    </ul>
+    <form action="receber_remover_pedido" method="POST">
+        <label for="campo_numero_mesa">Digite o numero da mesa:</label>
+        <input type="text" id="campo_numero_mesa" name="numero_mesa" placeholder="Ex: 1, 2, 3..." required>
+        
+        <button type="submit">Remover pedido</button>
+    </form>
+    {{hoje|datetime_format}} <br>
+    {{ hoje|datetime_format("%B %Y") }}
+
+{% endblock %}
