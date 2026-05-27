@@ -1,5 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
+
+<div class="form-container" style="margin-bottom: 30px; padding: 15px; border: 1px solid #ccc;">
+    <h3></h3>
+    <form action="{{ url_for('login') }}" method="POST">
+        {{ form.hidden_tag() }}
+
+        <p>
+            {{ form.nome.label }}<br>
+            {{ form.nome(size=32) }}
+        </p>
+        <p>
+            {{ form.senha.label }}<br>
+            {{ form.senha() }}
+        </p>
+        <p>
+            {{ form.submit() }}
+        </p>
+    </form>
+</div>
+
 <h2>📊 Visão Geral</h2>
 
 <h3>Desenvolvedores Cadastrados</h3>

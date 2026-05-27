@@ -4,8 +4,8 @@ Define a configuração básica, modelos de banco de dados, formulários e rotas
 """
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, IntegerField, SelectField, DateField, SubmitField
-from wtforms.validators import DataRequired, NumberRange
+from wtforms import StringField, TextAreaField, IntegerField, SelectField, DateField, SubmitField, PasswordField
+from wtforms.validators import DataRequired, NumberRange, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 
 # Inicialização e configuração do aplicativo Flask
@@ -25,6 +25,7 @@ class Desenvolvedor(db.Model):
     """Modelo representando um Desenvolvedor."""
     id = db.Column(db.Integer,  primary_key=True)
     nome = db.Column(db.String(25), nullable=False)
+    senha = db.Column(db.String(255), nullable=False)
     # Relação 1-para-N com Task: Um desenvolvedor pode ter várias tarefas
     tarefa = db.relationship('Tarefa', backref='desenvolvedor', lazy=True, cascade='all, delete-orphan')
 
@@ -42,7 +43,14 @@ class Tarefa(db.Model):
 class DeveloperForm(FlaskForm):
     """Formulário para cadastrar um novo desenvolvedor."""
     nome = StringField('Nome do Desenvolvedor', validators=[DataRequired(message="O nome é obrigatório.")])
+    senha = PasswordField('Senha', validators=[DataRequired(message="A senha é obrigatória.")])
+    confirmar_senha = PasswordField('Confirme a Senha', validators=[DataRequired(message="Por favor, confime sua senha."), EqualTo('senha', message="As senhas devem ser iguais.")])
     submit = SubmitField('Cadastrar')
+
+class LogarDeveloperForm(FlaskForm):
+    nome = StringField('Nome do Desenvolvedor', validators=[DataRequired(message="O nome é obrigatório.")])
+    senha = PasswordField('Senha', validators=[DataRequired(message="A senha é obrigatória.")])
+    submit = SubmitField('Logar')
 
 class TarefaForm(FlaskForm):
     """Formulário para criar uma nova tarefa e atribuí-la a um desenvolvedor."""
@@ -71,7 +79,10 @@ def index():
     """Rota principal que exibe todos os desenvolvedores e tarefas cadastradas."""
     developers = Desenvolvedor.query.order_by(Desenvolvedor.nome).all()
     tarefas = Tarefa.query.order_by(Tarefa.prazo).all()
-    return render_template('index.html', developers=developers, tarefas=tarefas)
+
+    form = LogarDeveloperForm()
+
+    return render_template('index.html', developers=developers, tarefas=tarefas, form=form)
 
 @app.route('/cadastrar-desenvolvedor', methods=['GET', 'POST'])
 def registrar_desenvolvedor():
@@ -79,12 +90,20 @@ def registrar_desenvolvedor():
     form = DeveloperForm()
     # Processa o formulário se enviado com método POST e passar nas validações
     if form.validate_on_submit():
-        new_dev = Desenvolvedor(nome=form.nome.data)
+        new_dev = Desenvolvedor(nome=form.nome.data, senha=form.senha.data)
         db.session.add(new_dev)
         db.session.commit()
         flash('Desenvolvedor cadastrado com sucesso!', 'success')
         return redirect(url_for('registrar_desenvolvedor'))
     return render_template('registrar_desenvolvedor.html', form=form)
+
+@app.route('/login', methods=['POST'])
+def login():
+    form = LogarDeveloperForm()
+
+    if(form.validate_on_submit()):
+        
+        return redirect(url_for('index'))
 
 @app.route('/criar-tarefa', methods=['GET', 'POST'])
 def criar_tarefa():

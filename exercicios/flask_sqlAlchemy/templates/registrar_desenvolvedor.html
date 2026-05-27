@@ -6,7 +6,20 @@
     <div>
         {{ form.nome.label }}
         {{ form.nome() }}
+        {{ form.senha.label }}
+        {{ form.senha() }}
+        {{ form.confirmar_senha.label }}
+        {{ form.confirmar_senha() }}
+
         {% for error in form.nome.errors %}
+        <span class="error">{{ error }}</span>
+        {% endfor %}
+
+        {% for error in form.senha.errors %}
+        <span class="error">{{ error }}</span>
+        {% endfor %}
+        
+        {% for error in form.confirmar_senha.errors %}
         <span class="error">{{ error }}</span>
         {% endfor %}
     </div>
