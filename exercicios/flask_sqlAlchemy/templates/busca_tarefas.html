@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>🔍 Pesquisar Tarefas</h2>
-<form method="POST">
+<form method="POST" class="form-container">
     {{ form.hidden_tag() }}
     <div>
         {{ form.data_busca.label }}
@@ -24,20 +24,17 @@
             📅 Entrega: {{ tarefa.prazo.strftime('%d/%m/%Y') }}
         </div>
         <div style="display: flex; gap: 10px;">
-            <!-- <a href="{{ url_for('editar_tarefa', id_tarefa=tarefa.id, origem='buscar_tarefas') }}" class="btn-edit" -->
-            <!-- style="margin: 0; text-decoration: none;">✏️ Editar</a> -->
-            <form method="POST" action="{{ url_for('editar_tarefa', id_tarefa=tarefa.id, origem='buscar_tarefas') }}"
-                style="margin: 0; display: inline;">
-                <button type="submit" class="btn-edit" style="margin: 0; border: none; cursor: pointer;">✏️
-                    Editar</button>
-                {{ form.hidden_tag() }}
-            </form>
-            <form method="POST" action="{{ url_for('deletar_tarefa', id_tarefa=tarefa.id) }}"
-                style="margin: 0; display: inline;">
-                <button type="submit" class="btn-delete" style="margin: 0; border: none; cursor: pointer;"
-                    onclick="return confirm('Tem certeza que deseja deletar esta tarefa?')">🗑️ Deletar</button>
-                {{ form.hidden_tag() }}
-            </form>
+            {% if tarefa.id_desenvolvedor == dev_id %}
+                <form method="GET" action="{{ url_for('editar_tarefa', id_tarefa=tarefa.id, origem='buscar_tarefas') }}"
+                    style="margin: 0; display: inline;" class="form-container">
+                    <button type="submit" class="btn-edit">✏️ Editar</button>
+                </form>
+                <form method="POST" action="{{ url_for('deletar_tarefa', id_tarefa=tarefa.id) }}"
+                    style="margin: 0; display: inline;" class="form-container">
+                    {{ form.hidden_tag() }}
+                    <button type="submit" class="btn-delete" onclick="return confirm('Tem certeza que deseja deletar esta tarefa?')">🗑️ Deletar</button>
+                </form>
+            {% endif %}
         </div>
     </li>
     {% else %}

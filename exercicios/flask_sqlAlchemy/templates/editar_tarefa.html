@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>✏️ Editar Tarefa: {{ tarefa.nome }}</h2>
-<form method="POST">
+<form method="POST" class="form-container">
     {{ form.hidden_tag() }}
     <div>
         {{ form.id_desenvolvedor.label }}

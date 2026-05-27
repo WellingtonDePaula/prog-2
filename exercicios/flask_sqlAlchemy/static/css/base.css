@@ -27,10 +27,36 @@ nav a {
     padding: 8px 12px;
     border-radius: 6px;
     transition: background 0.2s;
+    align-content: center;
 }
 
 nav a:hover {
     background: #eff6ff;
+}
+
+.nav-user-box {
+    float: right;
+    margin: 0;
+    padding: 8px 12px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 40%;
+    overflow: hidden;
+}
+
+.nav-user-name {
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 180px;
+}
+
+.nav-logout-form button {
+    margin: 0;
 }
 
 .flash {
@@ -46,7 +72,7 @@ nav a:hover {
     color: #166534;
 }
 
-form {
+.form-container {
     background: #fff;
     padding: 1.5rem;
     border-radius: 8px;

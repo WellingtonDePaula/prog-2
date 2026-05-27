@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if not session.get('developer_id') %}
 <div class="form-container" style="margin-bottom: 30px; padding: 15px; border: 1px solid #ccc;">
-    <h3></h3>
-    <form action="{{ url_for('login') }}" method="POST">
+    <h3>Logar</h3>
+    <form action="{{ url_for('login') }}" method="POST" class="form-container">
         {{ form.hidden_tag() }}
 
         <p>
             {{ form.nome.label }}<br>
-            {{ form.nome(size=32) }}
+            {{ form.nome() }}
         </p>
         <p>
             {{ form.senha.label }}<br>
@@ -19,6 +20,12 @@
         </p>
     </form>
 </div>
+{% else %}
+<div class="form-container" style="margin-bottom: 30px; padding: 15px; border: 1px solid #ccc;">
+    <h3>Você está logado</h3>
+    <p>Bem-vindo, <strong>{{ session.get('developer_name') }}</strong>.</p>
+</div>
+{% endif %}
 
 <h2>📊 Visão Geral</h2>
 

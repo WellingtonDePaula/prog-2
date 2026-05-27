@@ -2,7 +2,7 @@
 Aplicativo principal Flask integrado com SQLAlchemy e WTForms.
 Define a configuração básica, modelos de banco de dados, formulários e rotas.
 """
-from flask import Flask, render_template, redirect, url_for, flash, request
+from flask import Flask, render_template, redirect, url_for, flash, request, session
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, IntegerField, SelectField, DateField, SubmitField, PasswordField
 from wtforms.validators import DataRequired, NumberRange, EqualTo
@@ -82,6 +82,33 @@ def index():
 
     form = LogarDeveloperForm()
 
+    return render_template(
+        'index.html',
+        developers=developers,
+        tarefas=tarefas,
+        form=form,
+    )
+
+@app.route('/login', methods=['POST'])
+def login():
+    form = LogarDeveloperForm()
+
+    if form.validate_on_submit():
+        developer = Desenvolvedor.query.filter_by(
+            nome=form.nome.data,
+            senha=form.senha.data
+        ).first()
+
+        if developer:
+            session['developer_id'] = developer.id
+            session['developer_name'] = developer.nome
+            flash('Login realizado com sucesso!', 'success')
+            return redirect(url_for('index'))
+
+        flash('Usuário ou senha incorretos!', 'error')
+
+    developers = Desenvolvedor.query.order_by(Desenvolvedor.nome).all()
+    tarefas = Tarefa.query.order_by(Tarefa.prazo).all()
     return render_template('index.html', developers=developers, tarefas=tarefas, form=form)
 
 @app.route('/cadastrar-desenvolvedor', methods=['GET', 'POST'])
@@ -93,22 +120,28 @@ def registrar_desenvolvedor():
         new_dev = Desenvolvedor(nome=form.nome.data, senha=form.senha.data)
         db.session.add(new_dev)
         db.session.commit()
+        if not session.get('developer_id'):
+             session['developer_id'] = new_dev.id
+             session['developer_name'] = new_dev.nome
         flash('Desenvolvedor cadastrado com sucesso!', 'success')
-        return redirect(url_for('registrar_desenvolvedor'))
+        return redirect(url_for('index'))
     return render_template('registrar_desenvolvedor.html', form=form)
 
-@app.route('/login', methods=['POST'])
-def login():
-    form = LogarDeveloperForm()
-
-    if(form.validate_on_submit()):
-        
-        return redirect(url_for('index'))
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('developer_id', None)
+    session.pop('developer_name', None)
+    flash('Você foi deslogado com sucesso.', 'success')
+    return redirect(url_for('index'))
 
 @app.route('/criar-tarefa', methods=['GET', 'POST'])
 def criar_tarefa():
     """Rota para visualizar o formulário e criar novas tarefas vinculadas aos desenvolvedores."""
+    if not session.get('developer_id'):
+        flash('Faça login para criar tarefas.', 'error')
+        return redirect(url_for('index'))
     form = TarefaForm()
+    
     # Popula o SelectField de desenvolvedor_id dinamicamente com as opções do banco de dados
     devs = Desenvolvedor.query.all()
     devs_list = []
@@ -133,6 +166,9 @@ def criar_tarefa():
 
 @app.route('/pesquisar-tarefas', methods=['GET', 'POST'])
 def buscar_tarefas():
+    if not session.get('developer_id'):
+        flash('Faça login para pesquisar tarefas.', 'error')
+        return redirect(url_for('index'))
     form = TarefaPesquisarForm()
     # Por padrão, mostra todas as tarefas ordenadas por data
     tarefas = Tarefa.query.order_by(Tarefa.prazo).all()
@@ -143,21 +179,32 @@ def buscar_tarefas():
         else:
             tarefas = Tarefa.query.order_by(Tarefa.prazo).all()
 
-    return render_template('busca_tarefas.html', form=form, tarefas=tarefas)
+    return render_template('busca_tarefas.html', form=form, tarefas=tarefas, dev_id=session.get('developer_id'))
 
 @app.route('/editar-tarefa/<int:id_tarefa>/<string:origem>', methods=['GET', 'POST'])
 def editar_tarefa(id_tarefa, origem):
+    if not session.get('developer_id'):
+        flash('Faça login para editar tarefas.', 'error')
+        return redirect(url_for('index'))
+    dev_id = session.get('developer_id')
     tarefa = Tarefa.query.get_or_404(id_tarefa)
+
+    if tarefa.id_desenvolvedor != dev_id:
+        flash('Você só pode editar suas próprias tarefas.', 'error')
+        return redirect(url_for('buscar_tarefas'))
+
     form = TarefaAtualizarForm(obj=tarefa)  # Pré-preenche o formulário com os dados atuais
+    
     devs = Desenvolvedor.query.all()
     devs_list = []
     for d in devs:
         devs_list.append((d.id, d.nome))
     form.id_desenvolvedor.choices = devs_list
-    print(request.url_rule)
-    print(form.validate_on_submit())
-    print(origem)
-    if form.validate_on_submit() :
+    
+    if form.validate_on_submit():
+        if form.id_desenvolvedor.data != tarefa.id_desenvolvedor:
+            flash('A tarefa só pode ser atribuída a você mesmo. Atribuição não alterada.', 'error')
+            return redirect(url_for('editar_tarefa', id_tarefa=id_tarefa, origem=origem))
         # Atualiza os campos manualmente para garantir compatibilidade de tipos
         tarefa.nome = form.nome.data
         tarefa.descricao = form.descricao.data
@@ -173,7 +220,16 @@ def editar_tarefa(id_tarefa, origem):
 
 @app.route('/deletar-tarefa/<int:id_tarefa>', methods=['POST'])
 def deletar_tarefa(id_tarefa):
+    if not session.get('developer_id'):
+        flash('Faça login para deletar tarefas.', 'error')
+        return redirect(url_for('index'))
+    
     tarefa = Tarefa.query.get_or_404(id_tarefa)
+    
+    if tarefa.id_desenvolvedor != session.get('developer_id'):
+        flash('Você só pode deletar suas próprias tarefas.', 'error')
+        return redirect(url_for('buscar_tarefas'))
+    
     db.session.delete(tarefa)
     db.session.commit()
     flash('Tarefa deletada com sucesso!', 'success')

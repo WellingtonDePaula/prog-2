@@ -13,8 +13,19 @@
     <nav>
         <a href="{{ url_for('index') }}">🏠 Início</a>
         <a href="{{ url_for('registrar_desenvolvedor') }}">👤 Cadastrar Dev</a>
-        <a href="{{ url_for('criar_tarefa') }}">📝 Criar Tarefa</a>
-        <a href="{{ url_for('buscar_tarefas') }}">🔍 Pesquisar/Editar</a>
+        {% if session.get('developer_id') %}
+            <a href="{{ url_for('criar_tarefa') }}">📝 Criar Tarefa</a>
+            <a href="{{ url_for('buscar_tarefas') }}">🔍 Pesquisar/Editar</a>
+
+            <div class="nav-user-box">
+                <p class="nav-user-name">Logado: {{ session.get('developer_name') }}</p>
+                <form action="{{ url_for('logout') }}" method="POST" class="nav-logout-form">
+                    {{ form.hidden_tag() }}
+                    <button type="submit">Sair</button>
+                </form>
+            </div>
+
+        {% endif %}
     </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
