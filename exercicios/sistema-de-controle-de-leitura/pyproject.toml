@@ -1,0 +1,18 @@
+[project]
+name = "sistema-de-controle-de-leitura"
+version = "0.1.0"
+description = "Projeto desenvolvido como forma de estudo e aprendizado para a prova de Programação II do dia 10/06/2026"
+authors = [
+    {name = "Wellz",email = "owellingtondepaula@gmail.com"}
+]
+requires-python = ">=3.14"
+dependencies = [
+    "flask (>=3.1.3,<4.0.0)",
+    "flask-sqlalchemy (>=3.1.1,<4.0.0)",
+    "flask-wtf (>=1.3.0,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

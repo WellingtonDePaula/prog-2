@@ -121,8 +121,8 @@ def registrar_desenvolvedor():
         db.session.add(new_dev)
         db.session.commit()
         if not session.get('developer_id'):
-             session['developer_id'] = new_dev.id
-             session['developer_name'] = new_dev.nome
+            session['developer_id'] = new_dev.id
+            session['developer_name'] = new_dev.nome
         flash('Desenvolvedor cadastrado com sucesso!', 'success')
         return redirect(url_for('index'))
     return render_template('registrar_desenvolvedor.html', form=form)
