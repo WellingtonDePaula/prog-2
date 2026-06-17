@@ -10,6 +10,13 @@
         {{ form.senha() }}
         {{ form.confirmar_senha.label }}
         {{ form.confirmar_senha() }}
+        
+        {% for subfield in form.isAdmin %}
+            <div class="form-check">
+                {{ subfield(class="form-check-input") }}
+                {{ subfield.label(class="form-check-label") }}
+            </div>
+        {% endfor %}
 
         {% for error in form.nome.errors %}
         <span class="error">{{ error }}</span>
@@ -20,6 +27,10 @@
         {% endfor %}
         
         {% for error in form.confirmar_senha.errors %}
+        <span class="error">{{ error }}</span>
+        {% endfor %}
+
+        {% for error in form.isAdmin.errors %}
         <span class="error">{{ error }}</span>
         {% endfor %}
     </div>

@@ -4,7 +4,7 @@ Define a configuração básica, modelos de banco de dados, formulários e rotas
 """
 from flask import Flask, render_template, redirect, url_for, flash, request, session
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, IntegerField, SelectField, DateField, SubmitField, PasswordField
+from wtforms import StringField, TextAreaField, IntegerField, SelectField, DateField, SubmitField, PasswordField, RadioField
 from wtforms.validators import DataRequired, NumberRange, EqualTo
 from flask_sqlalchemy import SQLAlchemy
 
@@ -26,6 +26,7 @@ class Desenvolvedor(db.Model):
     id = db.Column(db.Integer,  primary_key=True)
     nome = db.Column(db.String(25), nullable=False)
     senha = db.Column(db.String(255), nullable=False)
+    isAdmin = db.Column(db.Boolean, nullable=False)
     # Relação 1-para-N com Task: Um desenvolvedor pode ter várias tarefas
     tarefa = db.relationship('Tarefa', backref='desenvolvedor', lazy=True, cascade='all, delete-orphan')
 
@@ -45,6 +46,7 @@ class DeveloperForm(FlaskForm):
     nome = StringField('Nome do Desenvolvedor', validators=[DataRequired(message="O nome é obrigatório.")])
     senha = PasswordField('Senha', validators=[DataRequired(message="A senha é obrigatória.")])
     confirmar_senha = PasswordField('Confirme a Senha', validators=[DataRequired(message="Por favor, confime sua senha."), EqualTo('senha', message="As senhas devem ser iguais.")])
+    isAdmin = RadioField('É admin', choices=[(True, "Sim"), [False, "Não"]], validators=[DataRequired('É necessário')])
     submit = SubmitField('Cadastrar')
 
 class LogarDeveloperForm(FlaskForm):
@@ -117,7 +119,9 @@ def registrar_desenvolvedor():
     form = DeveloperForm()
     # Processa o formulário se enviado com método POST e passar nas validações
     if form.validate_on_submit():
-        new_dev = Desenvolvedor(nome=form.nome.data, senha=form.senha.data)
+        vailogo = False
+        if (form.isAdmin.data == "True"): vailogo = True
+        new_dev = Desenvolvedor(nome=form.nome.data, senha=form.senha.data, isAdmin=vailogo)
         db.session.add(new_dev)
         db.session.commit()
         if not session.get('developer_id'):
@@ -220,8 +224,11 @@ def editar_tarefa(id_tarefa, origem):
 
 @app.route('/deletar-tarefa/<int:id_tarefa>', methods=['POST'])
 def deletar_tarefa(id_tarefa):
-    if not session.get('developer_id'):
+    if (not session.get('developer_id')):
         flash('Faça login para deletar tarefas.', 'error')
+        return redirect(url_for('index'))
+    if (not Desenvolvedor.query.get_or_404(session.get('developer_id')).isAdmin):
+        flash('O usuário deve ser admin!')
         return redirect(url_for('index'))
     
     tarefa = Tarefa.query.get_or_404(id_tarefa)

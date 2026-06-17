@@ -1,0 +1,8 @@
+[tipo]([escopo]): [Resumo curto em português - máx 50 caracteres]
+
+[Explique o conceito de Programação II aplicado e o que foi resolvido]
+
+# Exemplos válidos para se basear:
+# feat(exercicio): Implementar cálculo de média de notas
+# fix(trabalho): Corrigir vazamento de memória na lista encadeada
+# refactor(exercicio): Otimizar busca binária no vetor

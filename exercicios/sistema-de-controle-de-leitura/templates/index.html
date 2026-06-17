@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+    {% if not leitor_id %}
+        <h3>Logar</h3>
+        <form action="{{ url_for('login') }}", method="post">
+            {{ form.hidden_tag() }}
+        <p>
+            {{ form.nome.label }}<br>
+            {{ form.nome() }}
+        </p>
+        <p>
+            {{ form.senha.label }}<br>
+            {{ form.senha() }}
+        </p>
+        <p>
+            {{ form.submit() }}
+        </p>
+        </form>
+    {% else %}
+        <h3>Você está logado</h3>
+
+        {% for livro in livros_cadastros %}
+            <li><strong>Título: </strong>{{ livro.titulo }}</li>
+            <li><strong>Autor: </strong>{{ livro.autor }}</li>
+            <li><strong>Ano de publicação: </strong>{{ livro.ano_publicacao }}</li>
+            <li><strong>Nota: </strong>{{ livro.nota }}</li>
+            <hr>
+        {% else %}
+            <li>Nenhum livro cadastrado por você ainda, que tal <a href="{{ url_for('adicionar_livro') }}"> adicionar um livro? </a></li>
+        {% endfor %}
+    {% endif %}
+
+
+
+{% endblock %}
