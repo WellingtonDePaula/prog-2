@@ -1,23 +1,25 @@
-# Instruções de Commit - Disciplina de Programação II
+# Instruções de Commit - Programação II (Python / Flask / SQLAlchemy)
 
-Você está gerando mensagens de commit para um repositório acadêmico da escola.
-Siga estritamente as regras abaixo ao analisar o diff das alterações:
+Você está gerando mensagens de commit para um repositório acadêmico. 
+Analise as alterações no código Python e classifique-as conforme as regras abaixo:
 
-## 1. Identificação do Contexto
-Identifique em qual pasta a alteração foi feita e use o escopo correto:
-- Se o arquivo alterado estiver na pasta de exercícios: use o escopo `(exercicio)`
-- Se o arquivo alterado estiver na pasta de projetos: use o escopo `(projeto)`
+## 1. Identificação do Escopo
+- Se a alteração for na pasta de exercícios: use `(exercicio)`
+- Se a alteração for na pasta de trabalhos: use `(trabalho)`
 
-## 2. Padrão de Escrita
-- Escreva a mensagem obrigatoriamente em **Português (Brasil)**.
-- Use verbos no infinitivo ou presente para iniciar o resumo (ex: "Adicionar", "Corrigir", "Implementar").
-- Use o padrão Conventional Commits simplificado:
-  - `feat`: Quando criar um novo exercício, classe ou funcionalidade do trabalho.
-  - `fix`: Quando corrigir um bug, erro de lógica ou erro de compilação em um código.
-  - `docs`: Quando alterar comentários no código ou arquivos README.
-  - `refactor`: Quando melhorar a estrutura do código sem mudar o comportamento (ex: otimizar um loop).
+## 2. Mapeamento Técnico (Convenções)
+Escolha o tipo de commit (`feat`, `fix`, `refactor`, `docs`) baseando-se no que foi alterado:
+- **Novas Rotas / Endpoints Flask:** Use `feat` (ex: criar rota de cadastro).
+- **Modelos SQLAlchemy / Tabelas:** Use `feat` ou `refactor` (ex: definir modelo Usuario).
+- **Consultas (Queries / CRUD):** Use `feat` ou `fix` (ex: buscar registros com filter_by).
+- **Configurações / Banco de Dados:** Use `chore` ou `feat` (ex: configurar string de conexão).
 
-## 3. Estrutura Esperada
-[tipo][(escopo)]: [Resumo curto da atividade]
+## 3. Diretrizes de Escrita
+- Escreva obrigatoriamente em **Português (Brasil)**.
+- Comece o título com um verbo no infinitivo (ex: Adicionar, Corrigir, Implementar, Otimizar).
+- Mencione os componentes relevantes (ex: Flask, SQLAlchemy, Modelo, Rota) quando apropriado.
 
-[Descrição breve explicando qual conceito de Programação II foi aplicado, como POO, listas encadeadas, ponteiros, matrizes, polimorfismo, etc.]
+## 4. Estrutura da Mensagem
+[tipo][(escopo)]: [Título curto - máx 50 caracteres]
+
+[Descrição detalhada explicando o conceito de Programação II ou da stack aplicado. Ex: Uso de herança em modelos, relacionamentos implicit_fk/relationship, validação de rotas, etc.]
