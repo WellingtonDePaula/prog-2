@@ -1,14 +1,14 @@
 from flask import render_template, redirect, url_for, flash, session, request
-from model import Desenvolvedor, Tarefa
+from model import Desenvolvedor, Tarefa, load_user
 from forms import DeveloperForm, LoginForm, TarefaForm, TarefaPesquisarForm, TarefaAtualizarForm
 from app import app, db
+from flask_login import login_user, logout_user, login_required, current_user
 
 
 @app.route('/')
 def index():
     usuario_logado = False
-    if 'usuario' in session:
-        usuario_logado = True
+    
     form = LoginForm()
     """Rota principal que exibe todos os desenvolvedores e tarefas cadastradas."""
     developers = Desenvolvedor.query.order_by(Desenvolvedor.nome).all()
@@ -20,26 +20,20 @@ def index():
 def logar():
     usuario_logado = False
     form = LoginForm()
-    if 'usuario' not in session:
-        usuario = Desenvolvedor.query.filter_by(nome=form.nome.data,
-                                                senha=form.senha.data).first()
-    if usuario:
-        session["usuario"] = usuario.nome
-        session["usuario_id"] = usuario.id
-        flash('Usuário logado com sucesso!', 'success')
-        return redirect(url_for('index'))
-    else:
-        flash('Nome ou senha inválido!', 'error')
-   
+    if (form.validate_on_submit()):
+        dev = Desenvolvedor.query.filter_by(nome=form.nome.data, senha=form.senha.data).first()
+        if(dev):
+            login_user(dev)
+            return redirect(url_for('index'))
+        
     developers = Desenvolvedor.query.order_by(Desenvolvedor.nome).all()
     tarefas = Tarefa.query.order_by(Tarefa.prazo).all()
     return render_template('index.html', developers=developers, tarefas=tarefas,
-                           logado=usuario_logado, form = form,usuario=session.get("usuario"))
+                            logado=usuario_logado, form = form,usuario=session.get("usuario"))
 
 @app.route('/deslogar',methods=['POST','GET'])
 def deslogar():
-    if 'usuario' not in session:
-        return redirect(url_for('index'))
+    
     form = LoginForm()
     session.pop('usuario',None)
     session.pop('usuario_id',None)
@@ -52,10 +46,7 @@ def deslogar():
 @app.route('/cadastrar-desenvolvedor', methods=['GET', 'POST'])
 def registrar_desenvolvedor():
     usuario_logado = False
-    if 'usuario' in session:
-        usuario_logado = True
-    else:
-        return redirect(url_for("logar"))
+    
     """Rota para acessar o formulário e cadastrar novos desenvolvedores."""
     form = DeveloperForm()
     # Processa o formulário se enviado com método POST e passar nas validações
@@ -71,12 +62,10 @@ def registrar_desenvolvedor():
     return render_template('registrar_desenvolvedor.html', form=form,usuario=session.get("usuario"),logado=usuario_logado)
 
 @app.route('/criar-tarefa', methods=['GET', 'POST'])
+@login_required
 def criar_tarefa():
     usuario_logado = False
-    if 'usuario' in session:
-        usuario_logado = True
-    else:
-        return redirect(url_for("logar"))
+    
     """Rota para visualizar o formulário e criar novas tarefas vinculadas aos desenvolvedores."""
     form = TarefaForm()
     # Popula o SelectField de desenvolvedor_id dinamicamente com as opções do banco de dados
@@ -104,10 +93,7 @@ def criar_tarefa():
 @app.route('/pesquisar-tarefas', methods=['GET', 'POST'])
 def buscar_tarefas():
     usuario_logado = False
-    if 'usuario' in session:
-        usuario_logado = True
-    else:
-        return redirect(url_for("logar"))
+    
     form = TarefaPesquisarForm()
     # Por padrão, mostra todas as tarefas ordenadas por data
     tarefas = Tarefa.query.order_by(Tarefa.prazo).all()
@@ -121,12 +107,9 @@ def buscar_tarefas():
     return render_template('busca_tarefas.html', form=form, tarefas=tarefas,usuario=session.get("usuario"),logado=usuario_logado)
 
 @app.route('/editar-tarefa/<int:id_tarefa>/<string:origem>', methods=['GET', 'POST'])
+@login_required
 def editar_tarefa(id_tarefa, origem):
     usuario_logado = False
-    if 'usuario' in session:
-        usuario_logado = True
-    else:
-        return redirect(url_for("logar"))   
     
     tarefa = Tarefa.query.filter_by(id=id_tarefa,id_desenvolvedor=session.get("usuario_id")).one_or_none()
     if tarefa != None:
@@ -156,11 +139,8 @@ def editar_tarefa(id_tarefa, origem):
     return render_template('editar_tarefa.html', form=form, tarefa=tarefa,usuario=session.get("usuario"),logado=usuario_logado)
 
 @app.route('/deletar-tarefa/<int:id_tarefa>', methods=['POST'])
+@login_required
 def deletar_tarefa(id_tarefa):
-    if 'usuario' in session:
-        usuario_logado = True
-    else:
-        return redirect(url_for("logar"))
     tarefa = Tarefa.query.filter_by(id=id_tarefa,id_desenvolvedor=session.get("usuario_id")).one_or_none()
     if tarefa != None:
         db.session.delete(tarefa)
@@ -171,11 +151,8 @@ def deletar_tarefa(id_tarefa):
     return redirect(url_for('buscar_tarefas'))
 
 @app.route("/deletar_usuario", methods=["POST"])
+@login_required
 def deletar_usuario():
-    if 'usuario' in session:
-        usuario_logado = True
-    else:
-        return redirect(url_for("logar"))
     dev = Desenvolvedor.query.filter_by(id=session.get("usuario_id")).one_or_none()
     if dev != None:
         db.session.delete(dev)

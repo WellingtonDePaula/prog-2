@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 
+
 # Inicialização e configuração do aplicativo Flask
 app = Flask(__name__)
 
@@ -19,6 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 login_manager = LoginManager(app)
+login_manager.login_view = "logar"
 
 # Inicialização da extensão SQLAlchemy
 db = SQLAlchemy(app)
