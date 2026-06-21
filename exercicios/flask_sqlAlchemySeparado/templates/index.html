@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% if not logado %}
+{% if not current_user.is_authenticated %}
         <form method="POST" action="{{url_for('logar')}}">
 
             {{ form.hidden_tag() }}
@@ -20,11 +20,11 @@
     <ul>
         {% for dev in developers %}
         <li><strong>{{ dev.nome }}</strong> (ID: {{ dev.id }}) 
-        <form method="POST" action="{{ url_for('deletar_usuario', id_usuario=dev.id) }}"
+            <form method="POST" action="{{ url_for('deletar_usuario', id_usuario=dev.id) }}"
                 style="margin: 0; display: inline;padding:0%">
+                {{ form.hidden_tag() }}
                 <button type="submit" class="btn-delete" style="margin: 0; border: none; cursor: pointer;"
                     onclick="return confirm('Tem certeza que deseja deletar este usuário?')">🗑️ Deletar</button>
-                {{ form.hidden_tag() }}
             </form>
         </li>
         {% else %}

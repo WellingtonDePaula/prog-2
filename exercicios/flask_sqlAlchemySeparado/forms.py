@@ -7,7 +7,7 @@ class DeveloperForm(FlaskForm):
     """Formulário para cadastrar um novo desenvolvedor."""
     nome = StringField('Nome do Desenvolvedor', validators=[DataRequired(message="O nome é obrigatório.")])
     senha = PasswordField("Senha",validators=[DataRequired(message="O nome é obrigatório.")])
-    senha_confirmacao = PasswordField("Comfirmar senha",validators=[ EqualTo('senha', message='Senha deve ser igual a digitada no campo Senha')])
+    senha_confirmacao = PasswordField("Confirmar senha",validators=[ EqualTo('senha', message='Senha deve ser igual a digitada no campo Senha')])
     submit = SubmitField('Cadastrar')
 
 class LoginForm(FlaskForm):

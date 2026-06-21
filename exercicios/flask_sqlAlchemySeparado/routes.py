@@ -7,6 +7,10 @@ from flask_login import login_user, logout_user, login_required, current_user
 
 @app.route('/')
 def index():
+    if(current_user.is_authenticated):
+        print(current_user.nome)
+    else:
+        print('NADA AINDA!')
     form = LoginForm()
     """Rota principal que exibe todos os desenvolvedores e tarefas cadastradas."""
     developers = Desenvolvedor.query.order_by(Desenvolvedor.nome).all()
@@ -27,21 +31,22 @@ def logar():
         
     developers = Desenvolvedor.query.order_by(Desenvolvedor.nome).all()
     tarefas = Tarefa.query.order_by(Tarefa.prazo).all()
-    return render_template('index.html', developers=developers, tarefas=tarefas, form = form)
+    return render_template('index.html', developers=developers, tarefas=tarefas, form=form)
 
 @app.route('/deslogar',methods=['POST','GET'])
+@login_required
 def deslogar():
     form = LoginForm()
     logout_user()
     flash('Usuário deslogado com sucesso!', 'success')
-    developers = Desenvolvedor.query.order_by(Desenvolvedor.nome).all()
-    tarefas = Tarefa.query.order_by(Tarefa.prazo).all()
-    return render_template('index.html', developers=developers, tarefas=tarefas, form = form)
+    
+    return redirect(url_for('index'))
+    # developers = Desenvolvedor.query.order_by(Desenvolvedor.nome).all()
+    # tarefas = Tarefa.query.order_by(Tarefa.prazo).all()
+    # return render_template('index.html', developers=developers, tarefas=tarefas, form=form)
 
 @app.route('/cadastrar-desenvolvedor', methods=['GET', 'POST'])
 def registrar_desenvolvedor():
-    usuario_logado = False
-    
     """Rota para acessar o formulário e cadastrar novos desenvolvedores."""
     form = DeveloperForm()
     # Processa o formulário se enviado com método POST e passar nas validações
@@ -50,8 +55,10 @@ def registrar_desenvolvedor():
                                 senha = form.senha.data)
         db.session.add(new_dev)
         db.session.commit()
+        
+        login_user(new_dev)
         flash('Desenvolvedor cadastrado com sucesso!', 'success')
-        return redirect(url_for('registrar_desenvolvedor'))
+        return redirect(url_for('index'))
     if form.errors:
         flash('Preencha corretamente os dados!', 'error')
     return render_template('registrar_desenvolvedor.html', form=form,usuario=current_user)
@@ -59,8 +66,6 @@ def registrar_desenvolvedor():
 @app.route('/criar-tarefa', methods=['GET', 'POST'])
 @login_required
 def criar_tarefa():
-    usuario_logado = False
-    
     """Rota para visualizar o formulário e criar novas tarefas vinculadas aos desenvolvedores."""
     form = TarefaForm()
     # Popula o SelectField de desenvolvedor_id dinamicamente com as opções do banco de dados
@@ -87,8 +92,6 @@ def criar_tarefa():
 
 @app.route('/pesquisar-tarefas', methods=['GET', 'POST'])
 def buscar_tarefas():
-    usuario_logado = False
-    
     form = TarefaPesquisarForm()
     # Por padrão, mostra todas as tarefas ordenadas por data
     tarefas = Tarefa.query.order_by(Tarefa.prazo).all()
@@ -104,8 +107,6 @@ def buscar_tarefas():
 @app.route('/editar-tarefa/<int:id_tarefa>/<string:origem>', methods=['GET', 'POST'])
 @login_required
 def editar_tarefa(id_tarefa, origem):
-    usuario_logado = False
-    
     tarefa = Tarefa.query.filter_by(id=id_tarefa,id_desenvolvedor=current_user.id).one_or_none()
     if tarefa != None:
         form = TarefaAtualizarForm(obj=tarefa)  # Pré-preenche o formulário com os dados atuais
@@ -145,10 +146,11 @@ def deletar_tarefa(id_tarefa):
         flash('Essa tarefa não pertence a você!', 'error')
     return redirect(url_for('buscar_tarefas'))
 
-@app.route("/deletar_usuario", methods=["POST"])
+@app.route("/deletar_usuario<int:id_usuario>", methods=["POST"])
 @login_required
-def deletar_usuario():
-    dev = Desenvolvedor.query.filter_by(id=current_user.id).one_or_none()
+def deletar_usuario(id_usuario):
+    dev = Desenvolvedor.query.filter_by(id=id_usuario).one_or_none()
+    
     if dev != None:
         db.session.delete(dev)
         db.session.commit()

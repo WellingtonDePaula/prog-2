@@ -13,11 +13,11 @@
     <nav>
         <a href="{{ url_for('index') }}">🏠 Início</a>
         <a href="{{ url_for('registrar_desenvolvedor') }}">👤 Cadastrar Dev</a>
-        {% if logado %}
+        {% if current_user.is_authenticated %}
             <a href="{{ url_for('criar_tarefa') }}">📝 Criar Tarefa</a>
             <a href="{{ url_for('buscar_tarefas') }}">🔍 Pesquisar/Editar</a>
             <a href="{{ url_for('deslogar') }}"> 🚪 Sair</a>
-            <span>Bem vindo, {{usuario}}</span>
+            <span>Bem vindo, {{current_user.nome}}</span>
         {%endif%}
     </nav>
 

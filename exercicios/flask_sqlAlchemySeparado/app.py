@@ -11,7 +11,6 @@ from flask_login import LoginManager
 # Inicialização e configuração do aplicativo Flask
 app = Flask(__name__)
 
-
 # A chave secreta é usada para proteger proteger sessões e formulários (CSRF)
 app.config['SECRET_KEY'] = 'kfjad fkjasdlkfja;sldkfj39480293afKJ KJD:'
 # Configuração do banco de dados SQLite local
