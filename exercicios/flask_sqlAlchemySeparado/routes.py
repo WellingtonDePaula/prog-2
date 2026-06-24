@@ -15,11 +15,10 @@ def index():
     """Rota principal que exibe todos os desenvolvedores e tarefas cadastradas."""
     developers = Desenvolvedor.query.order_by(Desenvolvedor.nome).all()
     tarefas = Tarefa.query.order_by(Tarefa.prazo).all()
-    return render_template('index.html', developers=developers, tarefas=tarefas, form = form)
+    return render_template('index.html', developers=developers, tarefas=tarefas, form=form)
 
 @app.route('/logar',methods=['POST',"GET"])
 def logar():
-    usuario_logado = False
     form = LoginForm()
     if (form.validate_on_submit()):
         dev = Desenvolvedor.query.filter_by(nome=form.nome.data, senha=form.senha.data).first()
@@ -36,7 +35,7 @@ def logar():
 @app.route('/deslogar',methods=['POST','GET'])
 @login_required
 def deslogar():
-    form = LoginForm()
+    # form = LoginForm()
     logout_user()
     flash('Usuário deslogado com sucesso!', 'success')
     
@@ -91,6 +90,7 @@ def criar_tarefa():
     return render_template('criar_tarefa.html', form=form,usuario=current_user)
 
 @app.route('/pesquisar-tarefas', methods=['GET', 'POST'])
+@login_required
 def buscar_tarefas():
     form = TarefaPesquisarForm()
     # Por padrão, mostra todas as tarefas ordenadas por data
