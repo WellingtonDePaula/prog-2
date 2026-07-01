@@ -6,8 +6,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
-
-
 # Inicialização e configuração do aplicativo Flask
 app = Flask(__name__)
 
@@ -23,6 +21,3 @@ login_manager.login_view = "logar"
 
 # Inicialização da extensão SQLAlchemy
 db = SQLAlchemy(app)
-
-import routes
-

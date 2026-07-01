@@ -17,8 +17,8 @@
             <a href="{{ url_for('criar_tarefa') }}">📝 Criar Tarefa</a>
             <a href="{{ url_for('buscar_tarefas') }}">🔍 Pesquisar/Editar</a>
             <a href="{{ url_for('deslogar') }}"> 🚪 Sair</a>
-            <span>Bem vindo, {{current_user.nome}}</span>
-        {%endif%}
+            <span>Bem vindo, {{ current_user.nome }}</span>
+        {% endif %}
     </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
