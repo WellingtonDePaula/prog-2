@@ -5,22 +5,9 @@
     {{ flash('Logout for login.', 'error') }}
     {{ redirect(url_for('index')) }}
 {% else %}
+    <h1>Login</h1>
     <form method="POST">
     {{ form.hidden_tag() }}
-        <div>
-            {{ form.id.label }}
-            {{ form.id() }}
-            {% for error in form.id.errors %}
-            <span class="error">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.username.label }}
-            {{ form.username() }}
-            {% for error in form.username.errors %}
-            <span class="error">{{ error }}</span>
-            {% endfor %}
-        </div>
         <div>
             {{ form.email.label }}
             {{ form.email() }}
