@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if current_user.is_authenticated %}
+    {{ flash('Logout for login.', 'error') }}
+    {{ redirect(url_for('index')) }}
+{% else %}
+    <form method="POST">
+    {{ form.hidden_tag() }}
+        <div>
+            {{ form.id.label }}
+            {{ form.id() }}
+            {% for error in form.id.errors %}
+            <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.username.label }}
+            {{ form.username() }}
+            {% for error in form.username.errors %}
+            <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.email.label }}
+            {{ form.email() }}
+            {% for error in form.email.errors %}
+            <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.password.label }}
+            {{ form.password() }}
+            {% for error in form.password.errors %}
+            <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            <br>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endif %}
+
+{% endblock content %}
