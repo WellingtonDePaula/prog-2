@@ -21,3 +21,5 @@ login_manager.login_view = "logar"
 
 # Inicialização da extensão SQLAlchemy
 db = SQLAlchemy(app)
+
+import routes
