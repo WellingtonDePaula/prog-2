@@ -12,4 +12,4 @@ login_manager.login_view = "login"
 
 db = SQLAlchemy(app)
 
-from . import routes
+from routes import *
