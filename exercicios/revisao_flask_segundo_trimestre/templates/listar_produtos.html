@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% for produto in produtos %}
+<h1>Lista dos Produtos</h1>
+
+<p>Marca: {{ produto.marca }}</p>
+<p>Nome: {{ produto.nome }}</p>
+<p>Descrição: {{ produto.descricao }}</p>
+{% if not (current_user.papel == 'Cliente') %}
+<p>Valor de Custo: R${{ produto.valor_custo }}</p>
+{% endif %}
+<p>Valor de Venda: R${{ produto.valor_venda }}</p>
+<p>Peso: {{ produto.peso }}</p>
+<p>Quantidade: {{ produto.quantidade }}</p>
+<hr>
+
+{% endfor %}
+
+{% endblock content %}
