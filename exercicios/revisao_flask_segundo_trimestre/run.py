@@ -3,7 +3,7 @@ from model import Gerente, Cliente, Vendedor, Produto
 
 if __name__ == '__main__':
     with app.app_context():
-        db.create_all()  # Cria as tabelas na primeira execução
+        db.create_all()
         
         produto = Produto(marca='Ipê', nome='Detergente Neutro', descricao='O melhor detergente para tomar banho', valor_custo=1, valor_venda=1000, peso=100, quantidade=5, id_gerente=1)
         # db.session.add(produto)

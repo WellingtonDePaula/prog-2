@@ -49,6 +49,11 @@ class RegistrarProdutoForm(FlaskForm):
     submit = SubmitField('Registrar')
 
 
+class SelecionarClienteForm(FlaskForm):
+    cpf = StringField('CPF do cliente', validators=[DataRequired(message='Informe o CPF do cliente.')])
+    submit = SubmitField('Buscar cliente')
+
+
 class RealizarVendaForm(FlaskForm):
     produto = SelectField(
         'Produto',
@@ -63,7 +68,7 @@ class RealizarVendaForm(FlaskForm):
             NumberRange(min=1, message='A quantidade deve ser pelo menos 1.'),
         ],
     )
-    submit = SubmitField('Finalizar venda')
+    submit = SubmitField('Adicionar produto')
 
 
 class LoginForm(FlaskForm):

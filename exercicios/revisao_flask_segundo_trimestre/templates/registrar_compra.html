@@ -1,5 +1,67 @@
 {% extends "base.html" %}
 {% block content %}
 
+<h1>Registrar Venda</h1>
+
+{% if not cliente %}
+
+    <h2>1. Selecione o cliente</h2>
+    <form method="POST" action="{{ url_for('selecionar_cliente_venda') }}">
+        {{ cliente_form.hidden_tag() }}
+        {{ cliente_form.cpf.label }}
+        {{ cliente_form.cpf() }}
+        {{ cliente_form.submit() }}
+    </form>
+
+{% else %}
+
+    <h2>Cliente: {{ cliente.nome }} (CPF: {{ cliente.cpf }})</h2>
+
+    <h2>2. Adicione produtos</h2>
+    <form method="POST" action="{{ url_for('adicionar_item_venda') }}">
+        {{ venda_form.hidden_tag() }}
+        {{ venda_form.produto.label }}
+        {{ venda_form.produto() }}
+        {{ venda_form.quantidade.label }}
+        {{ venda_form.quantidade() }}
+        {{ venda_form.submit() }}
+    </form>
+
+    <h2>Carrinho</h2>
+    {% if itens_carrinho %}
+        <table>
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+            {% for item in itens_carrinho %}
+            <tr>
+                <td>{{ item.produto.nome }} ({{ item.produto.marca }})</td>
+                <td>{{ item.quantidade }}</td>
+                <td>R${{ "%.2f"|format(item.subtotal) }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('remover_item_venda', indice=item.indice) }}">
+                        <button type="submit">Remover</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p><strong>Total: R${{ "%.2f"|format(total) }}</strong></p>
+
+        <form method="POST" action="{{ url_for('finalizar_venda') }}">
+            <button type="submit">Finalizar venda</button>
+        </form>
+    {% else %}
+        <p>Nenhum produto adicionado ainda.</p>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('cancelar_venda') }}">
+        <button type="submit">Cancelar venda</button>
+    </form>
+
+{% endif %}
 
 {% endblock content %}

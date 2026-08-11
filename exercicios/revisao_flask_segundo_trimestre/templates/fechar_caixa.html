@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Fechar Caixa</h1>
+
+<h2>Vendas pendentes de fechamento</h2>
+{% if compras_pendentes %}
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>Vendedor</th>
+            <th>Data</th>
+            <th>Total</th>
+        </tr>
+        {% for compra in compras_pendentes %}
+        <tr>
+            <td>{{ compra.id }}</td>
+            <td>{{ compra.cliente.nome }}</td>
+            <td>{{ compra.vendedor.nome if compra.vendedor else '-' }}</td>
+            <td>{{ compra.data.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td>R${{ "%.2f"|format(compra.total) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p><strong>Total a fechar: R${{ "%.2f"|format(total_pendente) }}</strong></p>
+
+    <form method="POST" action="{{ url_for('fechar_caixa') }}">
+        <button type="submit">Fechar caixa</button>
+    </form>
+{% else %}
+    <p>Não há vendas pendentes.</p>
+{% endif %}
+
+<h2>Últimos fechamentos</h2>
+{% if ultimos_fechamentos %}
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Operador</th>
+            <th>Data</th>
+            <th>Total</th>
+        </tr>
+        {% for caixa in ultimos_fechamentos %}
+        <tr>
+            <td>{{ caixa.id }}</td>
+            <td>{{ caixa.operador.nome }}</td>
+            <td>{{ caixa.data_fechamento.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td>R${{ "%.2f"|format(caixa.valor_total) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>Nenhum fechamento registrado ainda.</p>
+{% endif %}
+
+{% endblock content %}
