@@ -2,6 +2,21 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, IntegerField, SelectField, DateField, SubmitField, PasswordField,RadioField
 from wtforms.validators import DataRequired, NumberRange, EqualTo
 
+class CadastraProdutoForm(FlaskForm):
+    pass
+
+class RealizarVendaForm(FlaskForm):
+    pass
+    # id = db.Column(db.Integer, primary_key=True)
+    # marca = db.Column(db.String(100), nullable=False)
+    # nome = db.Column(db.String(100), nullable=False)
+    # descricao = db.Column(db.Text, nullable=True)
+    # valor_custo = db.Column(db.Numeric, nullable=False)
+    # valor_venda = db.Column(db.Numeric, nullable=False)
+    # peso = db.Column(db.Numeric, nullable=False)
+    # quantidade = db.Column(db.Integer, nullable=False)
+    # id_gerente = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
+
 class LoginForm(FlaskForm):
     cpf = StringField('CPF', validators=[DataRequired(message="O CPF é obrigatório.")])
     senha = PasswordField("Senha",validators=[DataRequired(message="A senha é obrigatória.")])

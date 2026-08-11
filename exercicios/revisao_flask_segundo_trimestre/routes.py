@@ -16,7 +16,7 @@ def logar():
     if not current_user.is_authenticated:
         if form.validate_on_submit():
             usuario = Usuario.query.filter_by(cpf=form.cpf.data).one_or_none()
-            if usuario is not None:
+            if usuario is not None and usuario.verificar_senha(form.senha.data):
                  login_user(usuario)
                  flash('Usuário logado com sucesso!', 'success')
                  return render_template("index.html",form=form)
@@ -26,6 +26,7 @@ def logar():
         return render_template("index.html",form=form)
     return render_template("index.html",form=form)
 
+@login_required
 @app.route('/listar_produtos', methods=['POST', 'GET'])
 def listar_produtos():
     produtos = Produto.query.all()
