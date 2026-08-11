@@ -1,7 +1,7 @@
 from flask import render_template, flash, url_for, redirect
 from flask_login import login_user, current_user, logout_user, login_required
 from model import Usuario, Produto, Cliente, Vendedor, Gerente
-from forms import LoginForm, CadastrarForm
+from forms import LoginForm, CadastrarForm, RegistrarProdutoForm
 from app import app, db
 
 @app.route('/')
@@ -44,7 +44,15 @@ def registrar_compra():
 @login_required
 @app.route('/registrar_produto', methods=['POST', 'GET'])
 def registrar_produto():
-    pass
+    if (current_user.papel != "Gerente"):
+        flash("Só o gerente pode registrar produtos!", "error")
+        return redirect(url_for('index'))
+    form = RegistrarProdutoForm()
+    
+    if (form.validate_on_submit()):
+        pass
+    
+    return render_template("registrar_produto.html", form=form)
 
 @app.route('/registrar_cliente', methods=['POST', 'GET'])
 def registrar_cliente():

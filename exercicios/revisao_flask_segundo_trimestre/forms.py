@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, IntegerField, SelectField, DateField, SubmitField, PasswordField,RadioField
 from wtforms.validators import DataRequired, NumberRange, EqualTo
 
-class CadastraProdutoForm(FlaskForm):
+class RegistrarProdutoForm(FlaskForm):
     pass
 
 class RealizarVendaForm(FlaskForm):

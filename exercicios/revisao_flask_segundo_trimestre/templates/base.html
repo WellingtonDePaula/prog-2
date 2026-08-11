@@ -18,6 +18,7 @@
 
                 <a href="{{ url_for('registrar_compra') }}">🔍 Compra</a>
                 {% if current_user.papel != "Vendedor"%}
+                    <a href="{{ url_for('registrar_produto') }}">🔍 Registrar Produto</a>
                     <a href="{{ url_for('registrar_usuario') }}">🔍 Cadastrar Usuário</a>
                 {%else%}
                     <a href="{{ url_for('registrar_cliente') }}">🔍 Cadastrar Cliente</a>
