@@ -1,5 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 
+<form method="POST" action="{{url_for('registrar_produto')}}">
+
+    {{ form.hidden_tag() }}
+
+    {{ form.marca.label }}
+    {{ form.marca() }}
+    {{ form.nome.label }}
+    {{ form.nome() }}
+    {{ form.descricao.label }}
+    {{ form.descricao() }}
+    {{ form.valor_custo.label }}
+    {{ form.valor_custo() }}
+    {{ form.valor_venda.label }}
+    {{ form.valor_venda() }}
+    {{ form.peso.label }}
+    {{ form.peso() }}
+    {{ form.quantidade.label }}
+    {{ form.quantidade() }}
+
+    {{form.submit()}}
+
+</form>
 
 {% endblock content %}

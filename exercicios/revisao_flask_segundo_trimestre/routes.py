@@ -50,7 +50,24 @@ def registrar_produto():
     form = RegistrarProdutoForm()
     
     if (form.validate_on_submit()):
-        pass
+        produto = Produto.query.filter_by(marca=form.marca.data, nome=form.nome.data).first()
+        if(produto is not None):
+            flash('Produto já cadastrado', 'error')
+            return redirect(url_for('registrar_produto'))
+        produto = Produto(
+            marca=form.marca.data,
+            nome=form.nome.data,
+            descricao=form.descricao.data,
+            valor_custo=form.valor_custo.data,
+            valor_venda=form.valor_venda.data,
+            peso=form.peso.data,
+            quantidade=form.quantidade.data,
+            id_gerente=current_user.id
+        )
+        db.session.add(produto)
+        db.session.commit()
+        flash('Produto cadastrado com sucesso!', 'success')
+        return redirect(url_for('registrar_produto'))
     
     return render_template("registrar_produto.html", form=form)
 
