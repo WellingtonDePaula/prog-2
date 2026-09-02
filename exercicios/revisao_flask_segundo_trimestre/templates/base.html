@@ -10,36 +10,64 @@
 </head>
 
 <body>
-    <nav>
-        <a href="{{ url_for('pagina_inicial') }}">🏠 Início</a>
-        {% if current_user.is_authenticated %}
-            <a href="{{ url_for('pagina_listar_produtos') }}">📝 Listar Produtos</a>
-            {% if current_user.papel != "Cliente"%}
+<nav>
+<a href="{{ url_for('pagina_inicial') }}">🏠 Início</a>
+{% if current_user.is_authenticated %}
+<a href="{{ url_for('pagina_listar_produtos') }}">📝 Listar Produtos</a>
+{% if current_user.papel != "Cliente"%}
 
-                <a href="{{ url_for('registrar_compra') }}">🔍 Compra</a>
-                <a href="{{ url_for('fechar_caixa') }}">💰 Fechar Caixa</a>
-                {% if current_user.papel != "Vendedor"%}
-                    <a href="{{ url_for('registrar_produto') }}">🔍 Registrar Produto</a>
-                    <a href="{{ url_for('registrar_usuario') }}">🔍 Cadastrar Usuário</a>
-                {%else%}
-                    <a href="{{ url_for('registrar_cliente') }}">🔍 Cadastrar Cliente</a>
-                {%endif%}
+<a href="{{ url_for('registrar_compra') }}">🔍 Compra</a>
+<a href="{{ url_for('fechar_caixa') }}">💰 Fechar Caixa</a>
+{% if current_user.papel != "Vendedor"%}
+    <a href="{{ url_for('registrar_produto') }}">🔍 Registrar Produto</a>
+    <a href="{{ url_for('registrar_usuario') }}">🔍 Cadastrar Usuário</a>
+{%else%}
+    <a href="{{ url_for('registrar_cliente') }}">🔍 Cadastrar Cliente</a>
+{%endif%}
     
-            {%endif%}
-            <a href="{{ url_for('deslogar') }}"> 🚪 Sair</a>
-            <span>Bem vindo, {{current_user.nome}}</span>
-        {%endif%}
-    </nav>
+{%endif%}
+<a href="#" id="btn-logout">🚪 Sair</a>
+<span>Bem vindo, {{ current_user.nome }}</span>
+{%endif%}
+</nav>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="flash {{ category }}">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="flash {{ category }}">{{ message }}</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
 
-    {% block content %}{% endblock %}
+{% block content %}{% endblock %}
 </body>
+
+<script>
+    document.getElementById('btn-logout')?.addEventListener('click', async (event) => {
+        event.preventDefault();
+        await deslogar();
+    });
+
+    async function deslogar() {
+        const res = await fetch("{{ url_for('deslogar') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token() }}"
+            }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.erro);
+            return;
+        }
+
+        alert(data.mensagem);
+        
+        window.location.href = "{{ url_for('pagina_inicial') }}";
+    }
+</script>
 
 </html>

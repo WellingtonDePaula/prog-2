@@ -2,19 +2,61 @@
 {% block content %}
 
 {% if not current_user.is_authenticated %}
-        <form method="POST" action="{{url_for('logar')}}">
+        <div id="mensagem"></div>
 
+        <form id="form-login" method="POST" action="{{ url_for('logar') }}">
             {{ form.hidden_tag() }}
 
-            {{form.cpf.label}}
-            {{form.cpf()}}
-            {{form.senha.label}}
-            {{form.senha()}}
-        {{form.submit()}}
-        </form>
-{%else%}    
+            {{ form.cpf.label }}
+            {{ form.cpf(id="cpf") }}
 
-           <h1> Você esta logado!</h1>
-    
+            {{ form.senha.label }}
+            {{ form.senha(id="senha") }}
+
+            {{ form.submit() }}
+        </form>
+{% else %}
+        <h1>Você está logado!</h1>
 {% endif %}
+
+<script>
+    const formLogin = document.getElementById("form-login");
+    if (formLogin) {
+        formLogin.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const cpf = document.getElementById("cpf").value;
+            const senha = document.getElementById("senha").value;
+            await logar(cpf, senha);
+        });
+    }
+
+    async function logar(cpf, senha) {
+        const res = await fetch("/api/logar", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                cpf: cpf,
+                senha: senha,
+                csrf_token: document.querySelector('input[name="csrf_token"]').value
+            })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            mostrarMensagem(data.erro, 'error');
+            return;
+        }
+
+        mostrarMensagem(data.mensagem, 'success');
+        window.location.href = "/";
+    }
+
+    function mostrarMensagem(texto, tipo) {
+        const div = document.getElementById("mensagem");
+        if (!div) return;
+        div.textContent = texto;
+        div.className = tipo;
+    }
+</script>
 {% endblock %}

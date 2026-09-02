@@ -21,35 +21,12 @@ def pagina_inicial():
 def pagina_listar_produtos():
     return render_template("listar_produtos.html")
 
-#----- Chamadas da API Restful
-
-@app.route('/logar', methods=['POST', 'GET'])
-def logar(): 
-    form = LoginForm()
-    if not current_user.is_authenticated:
-        if form.validate_on_submit():
-            usuario = Usuario.query.filter_by(cpf=form.cpf.data).one_or_none()
-            if usuario is not None and usuario.verificar_senha(form.senha.data):
-                 login_user(usuario)
-                 flash('Usuário logado com sucesso!', 'success')
-                 return render_template("index.html",form=form)
-            else:
-                 flash('CPF ou senha inválido!', 'error')
-    else:
-        return render_template("index.html",form=form)
-    return render_template("index.html",form=form)
-
-
-
-@app.route('/api/produtos', methods=['GET'])
+@app.route('/registrar_compra', methods=['GET'])
 @login_required
-def buscar_produtos():
-    produtos = Produto.query.all()
-    resposta_site = []
-    for p in produtos:
-        resposta_site.append(p.to_dict())
-    
-    return jsonify(resposta_site), 200
+def pagina_resgistrar_compra():
+    return render_template('registrar_compra.html')
+
+#----- Chamadas da API Restful
 
 @app.route('/registrar_compra', methods=['GET'])
 @login_required
@@ -94,6 +71,43 @@ def registrar_compra():
         total=total,
     )
 
+@app.route('/api/logar', methods=['POST'])
+def logar():
+    if current_user.is_authenticated:
+        return jsonify({'erro': 'Usuário já está logado'}), 400
+
+    form = LoginForm()
+    if not form.validate_on_submit():
+        return jsonify({'erro': 'Dados inválidos', 'detalhes': form.errors}), 400
+
+    usuario = Usuario.query.filter_by(cpf=form.cpf.data).one_or_none()
+    if usuario is None or not usuario.verificar_senha(form.senha.data):
+        return jsonify({'erro': 'CPF ou senha inválido!'}), 401
+
+    login_user(usuario)
+    return jsonify({
+        'mensagem': 'Usuário logado com sucesso!',
+        'usuario': {'nome': usuario.nome, 'papel': usuario.papel}
+    }), 200
+
+@app.route('/deslogar', methods=['POST'])
+@login_required
+def deslogar():
+    logout_user()
+    
+    return jsonify({'mensagem': 'Usuário deslogado com sucesso!'}), 200
+
+
+
+@app.route('/api/produtos', methods=['GET'])
+@login_required
+def buscar_produtos():
+    produtos = Produto.query.all()
+    resposta_site = []
+    for p in produtos:
+        resposta_site.append(p.to_dict())
+    
+    return jsonify(resposta_site), 200
 
 @app.route('/registrar_compra/selecionar_cliente', methods=['POST'])
 @login_required
@@ -328,9 +342,3 @@ def registrar_usuario():
         return redirect(url_for('index'))
         
     return render_template('registrar_usuario.html', form=form)
-
-@app.route('/deslogar', methods=['POST', 'GET'])
-@login_required
-def deslogar():
-    logout_user()
-    return redirect(url_for('index'))
