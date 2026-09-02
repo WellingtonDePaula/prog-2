@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container">
+    <h2>Cadastrar Cliente</h2>
+    <form method="POST" action="{{ url_for('registrar_cliente') }}">
+        {{ form.hidden_tag() }}
+        
+        <div>
+            {{ form.cpf.label }}
+            {{ form.cpf(size=25) }}
+            {% for error in form.cpf.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div>
+            {{ form.nome.label }}
+            {{ form.nome(size=32) }}
+            {% for error in form.nome.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.senha.label }}
+            {{ form.senha(size=32) }}
+            {% for error in form.senha.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group-submit">
+            {{ form.submit(value="Cadastrar Cliente") }}
+        </div>
+    </form>
+</main>
+{% endblock %}

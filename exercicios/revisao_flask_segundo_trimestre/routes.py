@@ -1,4 +1,4 @@
-from flask import render_template, flash, url_for, redirect, request, session
+from flask import render_template, flash, url_for, redirect, request, session, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
 from model import Usuario, Produto, Cliente, Vendedor, Gerente, Compra, ItemVenda, Caixa
 from forms import LoginForm, CadastrarForm, RegistrarProdutoForm, RealizarVendaForm, SelecionarClienteForm
@@ -6,16 +6,22 @@ from app import app, db
 
 
 def _produtos_para_venda():
-    """Produtos com estoque disponível, formatados para o SelectField do formulário de venda."""
+    """produtos com estoque disponivel formatados para o SelectField do formulario de venda"""
     produtos = Produto.query.filter(Produto.quantidade > 0).all()
     return [(p.id, f'{p.nome} ({p.marca}) - R${p.valor_venda} - estoque: {p.quantidade}') for p in produtos]
 
+#--- Rotas normais do site.
 
 @app.route('/')
-def index():
+def pagina_inicial():
     form = LoginForm()
     return render_template("index.html",form=form)
 
+@app.route('/listar_produtos')
+def pagina_listar_produtos():
+    return render_template("listar_produtos.html")
+
+#----- Chamadas da API Restful
 
 @app.route('/logar', methods=['POST', 'GET'])
 def logar(): 
@@ -33,11 +39,17 @@ def logar():
         return render_template("index.html",form=form)
     return render_template("index.html",form=form)
 
-@app.route('/listar_produtos', methods=['POST', 'GET'])
+
+
+@app.route('/api/produtos', methods=['GET'])
 @login_required
-def listar_produtos():
+def buscar_produtos():
     produtos = Produto.query.all()
-    return render_template('listar_produtos.html', produtos=produtos)
+    resposta_site = []
+    for p in produtos:
+        resposta_site.append(p.to_dict())
+    
+    return jsonify(resposta_site), 200
 
 @app.route('/registrar_compra', methods=['GET'])
 @login_required

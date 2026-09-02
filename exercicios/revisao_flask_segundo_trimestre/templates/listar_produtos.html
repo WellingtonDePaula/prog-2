@@ -1,20 +1,52 @@
 {% extends "base.html" %}
 {% block content %}
 
-{% for produto in produtos %}
 <h1>Lista dos Produtos</h1>
 
-<p>Marca: {{ produto.marca }}</p>
-<p>Nome: {{ produto.nome }}</p>
-<p>Descrição: {{ produto.descricao }}</p>
-{% if not (current_user.papel == 'Cliente') %}
-<p>Valor de Custo: R${{ produto.valor_custo }}</p>
-{% endif %}
-<p>Valor de Venda: R${{ produto.valor_venda }}</p>
-<p>Peso: {{ produto.peso }}</p>
-<p>Quantidade: {{ produto.quantidade }}</p>
-<hr>
+<div id="lista-produtos"></div>
 
-{% endfor %}
+<script>
+    function escapeHTML(str) {
+        const div = document.createElement('div');
+        div.textContent = str ?? '';
+        return div.innerHTML;
+    }
+
+    async function carregarItens() {
+        const res = await fetch("/api/produtos");
+        if (!res.ok) return;
+
+        const items = await res.json();
+        const container = document.getElementById("lista-produtos");
+        container.innerHTML = "";
+
+        items.forEach(produto => {
+            const bloco = document.createElement("div");
+
+            let html = `
+                <h3>Marca: ${escapeHTML(produto.marca)}</h3>
+                <p>Nome: ${escapeHTML(produto.nome)}</p>
+                <p>Descrição: ${escapeHTML(produto.descricao)}</p>
+            `;
+
+            // só aparece se a API mandar esse campo
+            if (produto.valor_custo !== undefined) {
+                html += `<p>Valor de Custo: R$${produto.valor_custo}</p>`;
+            }
+
+            html += `
+                <p>Valor de Venda: R$${produto.valor_venda}</p>
+                <p>Peso: ${escapeHTML(produto.peso)}</p>
+                <p>Quantidade: ${produto.quantidade}</p>
+                <hr>
+            `;
+
+            bloco.innerHTML = html;
+            container.appendChild(bloco);
+        });
+    }
+
+    carregarItens();
+</script>
 
 {% endblock content %}

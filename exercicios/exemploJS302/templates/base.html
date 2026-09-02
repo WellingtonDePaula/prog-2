@@ -11,21 +11,17 @@
 
 <body>
     <nav>
-        <a href="{{ url_for('pagina_inicial') }}">🏠 Início</a>
+        <a href="{{ url_for('index') }}">🏠 Início</a>
         {% if current_user.is_authenticated %}
-            <a href="{{ url_for('pagina_listar_produtos') }}">📝 Listar Produtos</a>
+            <a href="{{ url_for('listar_produtos') }}">📝 Listar Produtos</a>
             {% if current_user.papel != "Cliente"%}
-
                 <a href="{{ url_for('registrar_compra') }}">🔍 Compra</a>
-                <a href="{{ url_for('fechar_caixa') }}">💰 Fechar Caixa</a>
-                {% if current_user.papel != "Vendedor"%}
-                    <a href="{{ url_for('registrar_produto') }}">🔍 Registrar Produto</a>
-                    <a href="{{ url_for('registrar_usuario') }}">🔍 Cadastrar Usuário</a>
-                {%else%}
-                    <a href="{{ url_for('registrar_cliente') }}">🔍 Cadastrar Cliente</a>
+                <a href="{{ url_for('registrar_cliente') }}">🔍 Cadastrar Cliente</a>
+                {% if current_user.papel == "Gerente"%}
+                    <a href="{{ url_for('registrar_funcionario') }}">🔍 Cadastrar Funcionário</a>
+                    <a href="{{ url_for('cadastrar_produto') }}">🔍 Cadastrar Produto</a>
                 {%endif%}
-    
-            {%endif%}
+            {% endif %}
             <a href="{{ url_for('deslogar') }}"> 🚪 Sair</a>
             <span>Bem vindo, {{current_user.nome}}</span>
         {%endif%}
