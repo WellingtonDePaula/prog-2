@@ -3,13 +3,13 @@
 
 <h1>Registrar Venda</h1>
 
-{% if not cliente %}
+{% if not cliente_selecionado %}
 
     <h2>1. Selecione o cliente</h2>
-    <form method="POST" action="{{ url_for('selecionar_cliente_venda') }}">
+    <form id="form-selecionar-cliente-venda" method="POST"">
         {{ cliente_form.hidden_tag() }}
         {{ cliente_form.cpf.label }}
-        {{ cliente_form.cpf() }}
+        {{ cliente_form.cpf(id='cpf') }}
         {{ cliente_form.submit() }}
     </form>
 
@@ -18,7 +18,7 @@
     <h2>Cliente: {{ cliente.nome }} (CPF: {{ cliente.cpf }})</h2>
 
     <h2>2. Adicione produtos</h2>
-    <form method="POST" action="{{ url_for('adicionar_item_venda') }}">
+    <form id="form-adicionar-item-venda" method="POST" action="{{ url_for('adicionar_item_venda') }}">
         {{ venda_form.hidden_tag() }}
         {{ venda_form.produto.label }}
         {{ venda_form.produto() }}
@@ -63,5 +63,48 @@
     </form>
 
 {% endif %}
+
+<script>
+    const formSelecionarClienteVenda = document.getElementById(
+        'form-selecionar-cliente-venda'
+    );
+
+    if (formSelecionarClienteVenda) {
+        formSelecionarClienteVenda.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const cpf = document.getElementById('cpf').value;
+
+            await selecionarClienteVenda(cpf);
+        });
+    }
+
+    async function selecionarClienteVenda(cpf) {
+        const csrfToken = document.querySelector(
+            '#form-selecionar-cliente-venda input[name="csrf_token"]'
+        ).value;
+
+        const resposta = await fetch(
+            `/api/compra/selecionar_cliente/${cpf}`,
+            {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            }
+        );
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+            alert(dados.erro || 'Erro ao selecionar cliente');
+            return;
+        }
+
+        alert(dados.mensagem);
+
+        window.location.reload();
+    }
+</script>
 
 {% endblock content %}

@@ -15,6 +15,7 @@ def _produtos_para_venda():
 @app.route('/')
 def pagina_inicial():
     form = LoginForm()
+    session.pop('venda_cliente_id')
     return render_template("index.html",form=form)
 
 @app.route('/listar_produtos')
@@ -24,16 +25,20 @@ def pagina_listar_produtos():
 @app.route('/registrar_compra', methods=['GET'])
 @login_required
 def pagina_resgistrar_compra():
-    return render_template('registrar_compra.html')
+    cliente_form = SelecionarClienteForm()
+    venda_form = RealizarVendaForm()
+    
+    cliente_selecionado = session.get("venda_cliente_id") != None
+    print(cliente_selecionado)
+    return render_template('registrar_compra.html', cliente_form=cliente_form, venda_form=venda_form, cliente_selecionado=cliente_selecionado)
 
 #----- Chamadas da API Restful
 
-@app.route('/registrar_compra', methods=['GET'])
+@app.route('/api/compra', methods=['POST'])
 @login_required
 def registrar_compra():
     if current_user.papel == "Cliente":
-        flash("Clientes não podem registrar compras!", "error")
-        return redirect(url_for("index"))
+        return jsonify({'erro': 'Você não tem permissão para realizar essa ação'}), 403
 
     cliente = None
     cliente_id = session.get('venda_cliente_id')
@@ -109,29 +114,27 @@ def buscar_produtos():
     
     return jsonify(resposta_site), 200
 
-@app.route('/registrar_compra/selecionar_cliente', methods=['POST'])
+@app.route('/api/compra/selecionar_cliente/<int:cliente_cpf>', methods=['POST'])
 @login_required
-def selecionar_cliente_venda():
+def selecionar_cliente_venda(cliente_cpf):
     if current_user.papel == "Cliente":
-        flash("Clientes não podem registrar compras!", "error")
-        return redirect(url_for("index"))
+        return jsonify({'erro': 'Você não tem permissão para realizar essa ação'}), 403
 
-    form = SelecionarClienteForm()
-    if form.validate_on_submit():
-        cliente = Cliente.query.filter_by(cpf=form.cpf.data).one_or_none()
-        if cliente is None:
-            flash('Cliente não encontrado. Verifique o CPF ou cadastre o cliente antes.', 'error')
-        else:
-            session['venda_cliente_id'] = cliente.id
-            session['venda_carrinho'] = []
-            flash(f'Cliente {cliente.nome} selecionado.', 'success')
+    cliente = Cliente.query.filter_by(cpf=cliente_cpf).one_or_none()
+    if cliente is None:
+        return jsonify({'erro': 'Cliente não encontrado'}), 404
     else:
-        flash('Informe um CPF válido.', 'error')
+        print(session.get('venda_cliente_id'))
+        session['venda_cliente_id'] = cliente.id
+        session['venda_carrinho'] = []
+        print(session.get('venda_cliente_id'))
+        return jsonify({'mensagem': 'Cliente selecionado com sucesso',
+                        'cliente_nome': cliente.nome,
+                        'cliente_cpf': cliente.cpf
+                        }), 200
 
-    return redirect(url_for('registrar_compra'))
 
-
-@app.route('/registrar_compra/adicionar_item', methods=['POST'])
+@app.route('/api/compra/adicionar_item', methods=['POST'])
 @login_required
 def adicionar_item_venda():
     if current_user.papel == "Cliente":
@@ -164,7 +167,7 @@ def adicionar_item_venda():
     return redirect(url_for('registrar_compra'))
 
 
-@app.route('/registrar_compra/remover_item/<int:indice>', methods=['POST'])
+@app.route('/api/compra/remover_item/<int:indice>', methods=['POST'])
 @login_required
 def remover_item_venda(indice):
     if current_user.papel == "Cliente":
@@ -179,7 +182,7 @@ def remover_item_venda(indice):
     return redirect(url_for('registrar_compra'))
 
 
-@app.route('/registrar_compra/cancelar', methods=['POST'])
+@app.route('/api/compra/cancelar', methods=['POST'])
 @login_required
 def cancelar_venda():
     session.pop('venda_carrinho', None)
@@ -188,7 +191,7 @@ def cancelar_venda():
     return redirect(url_for('registrar_compra'))
 
 
-@app.route('/registrar_compra/finalizar', methods=['POST'])
+@app.route('/api/compra/finalizar', methods=['POST'])
 @login_required
 def finalizar_venda():
     if current_user.papel == "Cliente":

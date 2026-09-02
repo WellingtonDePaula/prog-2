@@ -16,7 +16,7 @@
 <a href="{{ url_for('pagina_listar_produtos') }}">📝 Listar Produtos</a>
 {% if current_user.papel != "Cliente"%}
 
-<a href="{{ url_for('registrar_compra') }}">🔍 Compra</a>
+<a href="{{ url_for('pagina_resgistrar_compra') }}">🔍 Compra</a>
 <a href="{{ url_for('fechar_caixa') }}">💰 Fechar Caixa</a>
 {% if current_user.papel != "Vendedor"%}
     <a href="{{ url_for('registrar_produto') }}">🔍 Registrar Produto</a>
