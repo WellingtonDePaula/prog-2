@@ -10,12 +10,21 @@ def _produtos_para_venda():
     produtos = Produto.query.filter(Produto.quantidade > 0).all()
     return [(p.id, f'{p.nome} ({p.marca}) - R${p.valor_venda} - estoque: {p.quantidade}') for p in produtos]
 
+def produtos_para_venda_to_dict():
+    produtos = Produto.query.filter(Produto.quantidade > 0).all()
+    produtos_dict = []
+    
+    for produto in produtos:
+        produtos_dict.append(produto.to_dict())
+    
+    return produtos_dict
+    
+
 #--- Rotas normais do site.
 
 @app.route('/')
 def pagina_inicial():
     form = LoginForm()
-    session.pop('venda_cliente_id')
     return render_template("index.html",form=form)
 
 @app.route('/listar_produtos')
@@ -27,12 +36,68 @@ def pagina_listar_produtos():
 def pagina_resgistrar_compra():
     cliente_form = SelecionarClienteForm()
     venda_form = RealizarVendaForm()
+    venda_form.produto.choices = _produtos_para_venda()
     
-    cliente_selecionado = session.get("venda_cliente_id") != None
-    print(cliente_selecionado)
-    return render_template('registrar_compra.html', cliente_form=cliente_form, venda_form=venda_form, cliente_selecionado=cliente_selecionado)
+    return render_template('registrar_compra.html', cliente_form=cliente_form, venda_form=venda_form)
 
 #----- Chamadas da API Restful
+@app.route('/api/compra/remover_item/<int:indice>', methods=['POST'])
+@login_required
+def remover_item_venda(indice):
+    if current_user.papel == "Cliente":
+        flash("Clientes não podem registrar compras!", "error")
+        return redirect(url_for("index"))
+
+    carrinho = session.get('venda_carrinho', [])
+    if 0 <= indice < len(carrinho):
+        carrinho.pop(indice)
+        session['venda_carrinho'] = carrinho
+
+    return redirect(url_for('registrar_compra'))
+
+@app.route('/api/compra/adicionar_item', methods=['POST'])
+@login_required
+def adicionar_item_venda():
+    if current_user.papel == "Cliente":
+        flash("Clientes não podem registrar compras!", "error")
+        return redirect(url_for("index"))
+
+    if 'venda_cliente_id' not in session:
+        flash('Selecione um cliente antes de adicionar produtos.', 'error')
+        return redirect(url_for('registrar_compra'))
+
+    form = RealizarVendaForm()
+    form.produto.choices = _produtos_para_venda()
+
+    if form.validate_on_submit():
+        produto = Produto.query.get(form.produto.data)
+        carrinho = session.get('venda_carrinho', [])
+
+        no_carrinho = sum(item['quantidade'] for item in carrinho if item['produto_id'] == produto.id)
+        disponivel = produto.quantidade - no_carrinho
+
+        if form.quantidade.data > disponivel:
+            flash(f'Estoque insuficiente de {produto.nome}. Disponível: {disponivel}.', 'error')
+        else:
+            carrinho.append({'produto_id': produto.id, 'quantidade': form.quantidade.data})
+            session['venda_carrinho'] = carrinho
+            flash(f'{produto.nome} adicionado à venda.', 'success')
+    else:
+        flash('Não foi possível adicionar o produto. Verifique os dados.', 'error')
+
+    return redirect(url_for('registrar_compra'))
+@app.route("/api/compra/usuario_selecionado", methods=['GET'])
+@login_required
+def buscar_usuario_selecionado():
+    if current_user.papel == "Cliente":
+        return jsonify({'erro': 'Você não tem permissão para realizar essa ação'}), 403
+    
+    user = Usuario.query.get(session.get("venda_cliente_id"))
+    
+    if(not user):
+        return jsonify({"erro": "Usuário não existe"}), 404
+    
+    return jsonify(user.to_dict()), 200
 
 @app.route('/api/compra', methods=['POST'])
 @login_required
@@ -73,7 +138,7 @@ def registrar_compra():
         cliente_form=cliente_form,
         venda_form=venda_form,
         itens_carrinho=itens_carrinho,
-        total=total,
+        total=total
     )
 
 @app.route('/api/logar', methods=['POST'])
@@ -102,8 +167,6 @@ def deslogar():
     
     return jsonify({'mensagem': 'Usuário deslogado com sucesso!'}), 200
 
-
-
 @app.route('/api/produtos', methods=['GET'])
 @login_required
 def buscar_produtos():
@@ -124,62 +187,14 @@ def selecionar_cliente_venda(cliente_cpf):
     if cliente is None:
         return jsonify({'erro': 'Cliente não encontrado'}), 404
     else:
-        print(session.get('venda_cliente_id'))
-        session['venda_cliente_id'] = cliente.id
-        session['venda_carrinho'] = []
-        print(session.get('venda_cliente_id'))
+        
+        session["venda_cliente_id"] = cliente.id
+        session["venda_carrinho"] = []
+        
         return jsonify({'mensagem': 'Cliente selecionado com sucesso',
                         'cliente_nome': cliente.nome,
                         'cliente_cpf': cliente.cpf
                         }), 200
-
-
-@app.route('/api/compra/adicionar_item', methods=['POST'])
-@login_required
-def adicionar_item_venda():
-    if current_user.papel == "Cliente":
-        flash("Clientes não podem registrar compras!", "error")
-        return redirect(url_for("index"))
-
-    if 'venda_cliente_id' not in session:
-        flash('Selecione um cliente antes de adicionar produtos.', 'error')
-        return redirect(url_for('registrar_compra'))
-
-    form = RealizarVendaForm()
-    form.produto.choices = _produtos_para_venda()
-
-    if form.validate_on_submit():
-        produto = Produto.query.get(form.produto.data)
-        carrinho = session.get('venda_carrinho', [])
-
-        no_carrinho = sum(item['quantidade'] for item in carrinho if item['produto_id'] == produto.id)
-        disponivel = produto.quantidade - no_carrinho
-
-        if form.quantidade.data > disponivel:
-            flash(f'Estoque insuficiente de {produto.nome}. Disponível: {disponivel}.', 'error')
-        else:
-            carrinho.append({'produto_id': produto.id, 'quantidade': form.quantidade.data})
-            session['venda_carrinho'] = carrinho
-            flash(f'{produto.nome} adicionado à venda.', 'success')
-    else:
-        flash('Não foi possível adicionar o produto. Verifique os dados.', 'error')
-
-    return redirect(url_for('registrar_compra'))
-
-
-@app.route('/api/compra/remover_item/<int:indice>', methods=['POST'])
-@login_required
-def remover_item_venda(indice):
-    if current_user.papel == "Cliente":
-        flash("Clientes não podem registrar compras!", "error")
-        return redirect(url_for("index"))
-
-    carrinho = session.get('venda_carrinho', [])
-    if 0 <= indice < len(carrinho):
-        carrinho.pop(indice)
-        session['venda_carrinho'] = carrinho
-
-    return redirect(url_for('registrar_compra'))
 
 
 @app.route('/api/compra/cancelar', methods=['POST'])
