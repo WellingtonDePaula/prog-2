@@ -21,5 +21,5 @@ from itemsApiRest import blp
 
 api.register_blueprint(blp)
 
-# import route
+import route
 

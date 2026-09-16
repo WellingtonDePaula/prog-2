@@ -91,6 +91,7 @@
       }
       console.log("Digitando")
       tempoEspera = setTimeout(async () => {
+        console.log(encodeURIComponent(termo))
         const res = await fetch(`/api/items?search=${encodeURIComponent(termo)}`);
         const itens = await res.json();
         console.log("Executei a busca no servidor!")
