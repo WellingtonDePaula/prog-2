@@ -199,17 +199,17 @@
       const msg = document.getElementById("mensagem");
       console.log(id)
       const res = await fetch(`/api/items/${id}`, { method: "DELETE" });
-      const data = await res.json();
 
       if (res.ok) {
+        console.log("res ok")
         msg.className = "mt-4 p-3 rounded-lg text-sm bg-green-100 text-green-800";
-        msg.textContent = data.mensagem;
-        document.getElementById("formulario-edicao").classList.add("hidden");
-        document.getElementById("busca").value = "";
-      } else {
-        msg.className = "mt-4 p-3 rounded-lg text-sm bg-red-100 text-red-800";
-        msg.textContent = data.erro || "Erro ao deletar.";
-      }
+        msg.textContent = "Item deletado com sucesso";
+          document.getElementById("formulario-edicao").classList.add("hidden");
+          document.getElementById("busca").value = "";
+        } else {
+          msg.className = "mt-4 p-3 rounded-lg text-sm bg-red-100 text-red-800";
+          msg.textContent = data.erro || "Erro ao deletar.";
+        }
     });
   </script>
 </body>
