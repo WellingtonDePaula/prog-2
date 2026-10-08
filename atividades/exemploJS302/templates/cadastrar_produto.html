@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container">
+    <h2>Cadastrar Produto</h2>
+    <form method="POST" action="{{ url_for('cadastrar_produto') }}">
+        {{ form.hidden_tag() }}
+        
+        <div>
+            {{ form.marca.label }}
+            {{ form.marca(size=32) }}
+            {% for error in form.marca.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div>
+            {{ form.nome.label }}
+            {{ form.nome(size=32) }}
+            {% for error in form.nome.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div>
+            {{ form.descricao.label }}
+            {{ form.descricao(rows=4, cols=32) }}
+            {% for error in form.descricao.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div>
+            {{ form.valor_custo.label }}
+            {{ form.valor_custo(size=32) }}
+            {% for error in form.valor_custo.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div>
+            {{ form.valor_venda.label }}
+            {{ form.valor_venda(size=32) }}
+            {% for error in form.valor_venda.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div>
+            {{ form.peso.label }}
+            {{ form.peso(size=32) }}
+            {% for error in form.peso.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div>
+            {{ form.quantidade.label }}
+            {{ form.quantidade(size=32) }}
+            {% for error in form.quantidade.errors %}
+            <span class="error">[{{ error }}]</span>
+            {% endfor %}
+        </div>
+        
+        <div class="form-group-submit">
+            {{ form.submit() }}
+        </div>
+    </form>
+</main>
+{% endblock %}

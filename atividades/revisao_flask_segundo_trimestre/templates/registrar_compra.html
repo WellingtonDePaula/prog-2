@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Registrar Venda</h1>
+
+<div id="selecionar-cliente">
+    <h2>1. Selecione o cliente</h2>
+    <form id="form-selecionar-cliente-venda" method="POST"">
+        {{ cliente_form.hidden_tag() }}
+        {{ cliente_form.cpf.label }}
+        {{ cliente_form.cpf(id='cpf') }}
+        {{ cliente_form.submit() }}
+    </form>
+</div>
+
+
+
+<div id="adicionar-produtos" hidden>
+    <div><h2>Cliente: <div id="cliente-nome"></div> (CPF: <div id="cliente-cpf"></div>)</h2></div>
+
+    <h2>2. Adicione produtos</h2>
+    <form id="form-adicionar-item-venda" method="POST" action="{{ url_for('adicionar_item_venda') }}">
+        {{ venda_form.hidden_tag() }}
+        {{ venda_form.produto.label }}
+        {{ venda_form.produto() }}
+        {{ venda_form.quantidade.label }}
+        {{ venda_form.quantidade() }}
+        {{ venda_form.submit() }}
+    </form>
+
+    <h2>Carrinho</h2>
+    {% if itens_carrinho %}
+        <table>
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Subtotal</th>
+                <th></th>
+            </tr>
+            {% for item in itens_carrinho %}
+            <tr>
+                <td>{{ item.produto.nome }} ({{ item.produto.marca }})</td>
+                <td>{{ item.quantidade }}</td>
+                <td>R${{ "%.2f"|format(item.subtotal) }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('remover_item_venda', indice=item.indice) }}">
+                        <button type="submit">Remover</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p><strong>Total: R${{ "%.2f"|format(total) }}</strong></p>
+
+        <form method="POST" action="{{ url_for('finalizar_venda') }}">
+            <button type="submit">Finalizar venda</button>
+        </form>
+    {% else %}
+        <p>Nenhum produto adicionado ainda.</p>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('cancelar_venda') }}">
+        <button type="submit">Cancelar venda</button>
+    </form>
+</div>
+
+<script>
+    const selecionarCliente = document.getElementById(
+        'selecionar-cliente'
+    );
+    const adicionarProdutos = document.getElementById(
+        'adicionar-produtos'
+    );
+
+    const formSelecionarClienteVenda = document.getElementById(
+        'form-selecionar-cliente-venda'
+    );
+
+    const campoClienteNome = document.getElementById(
+        'cliente-nome'
+    );
+
+    const campoClienteCpf = document.getElementById(
+        'cliente-cpf'
+    );
+
+    formSelecionarClienteVenda.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const cpf = document.getElementById('cpf').value;
+
+        await selecionarClienteVenda(cpf);
+    });
+
+    async function adicionarItemVenda() {
+
+    }
+
+    async function buscarClienteSelecionado() {
+        const res = await fetch(
+            '/api/compra/usuario_selecionado',
+            {
+                method: 'GET'
+            }
+        )
+
+        const dados = await res.json();
+
+        campoClienteNome.innerHTML = dados.nome
+        campoClienteCpf.innerHTML = dados.cpf
+    }
+
+    async function selecionarClienteVenda(cpf) {
+        const csrfToken = document.querySelector(
+            '#form-selecionar-cliente-venda input[name="csrf_token"]'
+        ).value;
+
+        const resposta = await fetch(
+            `/api/compra/selecionar_cliente/${cpf}`,
+            {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                }
+            }
+        );
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+            alert(dados.erro || 'Erro ao selecionar cliente');
+            return;
+        }
+
+        selecionarCliente.setAttribute("hidden", "");
+        adicionarProdutos.removeAttribute("hidden");
+
+        buscarClienteSelecionado();
+
+        alert(dados.mensagem);
+    }
+</script>
+
+{% endblock content %}

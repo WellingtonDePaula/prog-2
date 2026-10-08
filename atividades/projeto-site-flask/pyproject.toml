@@ -1,0 +1,16 @@
+[project]
+name = "site-flask-html"
+version = "0.1.0"
+description = "Site de exemplo da aula."
+authors = [
+    {name = "Ríad, João, Pedro"}
+]
+requires-python = ">=3.14"
+dependencies = [
+    "flask (>=3.1.3,<4.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

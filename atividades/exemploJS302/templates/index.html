@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if not current_user.is_authenticated %}
+        <form method="POST" action="{{url_for('logar')}}">
+
+            {{ form.hidden_tag() }}
+
+            {{form.cpf.label}}
+            {{form.cpf()}}
+            {{form.senha.label}}
+            {{form.senha()}}
+        {{form.submit()}}
+
+{%else%}    
+
+           <h1> Você esta logado!</h1>
+    
+{% endif %}
+{% endblock %}

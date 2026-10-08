@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Registrar Cliente</h1>
+
+<form method="POST" action="{{url_for('registrar_cliente')}}">
+
+    {{ form.hidden_tag() }}
+
+    {{form.nome.label}}
+    {{form.nome()}}
+    {{form.cpf.label}}
+    {{form.cpf()}}
+    {{form.senha.label}}
+    {{form.senha()}}
+    {{form.confirmar_senha.label}}
+    {{form.confirmar_senha()}}
+    {# {{form.papel.label}}
+    {{form.papel()}} #}
+{{form.submit()}}
+
+{% endblock content %}

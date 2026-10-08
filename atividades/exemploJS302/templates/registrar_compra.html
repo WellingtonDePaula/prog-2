@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container">
+    <h2>Registrar Compra</h2>
+    
+    <div class="cart-section">
+        <h3>Adicionar Produtos</h3>
+        <label for="selectProduto">Selecione o Produto:</label>
+        <select id="selectProduto">
+            <option value="">-- Escolha um produto --</option>
+            {% for produto in produtos %}
+            <option value="{{ produto.id }}" data-nome="{{ produto.nome }}" data-preco="{{ produto.valor_venda }}" data-estoque="{{ produto.quantidade }}">
+                {{ produto.nome }} (Estoque: {{ produto.quantidade }} | R$ {{ "%.2f"|format(produto.valor_venda) }})
+            </option>
+            {% endfor %}
+        </select>
+        
+        <label for="inputQuantidade">Quantidade:</label>
+        <input type="number" id="inputQuantidade" min="1" value="1" class="input-quantidade">
+        
+        <button type="button" id="btnAdicionar" class="btn-adicionar">Adicionar ao Carrinho</button>
+    </div>
+
+    <form method="POST" action="{{ url_for('registrar_compra') }}" id="formCompra">
+        <div class="client-section">
+            <label for="id_cliente"><strong>Selecione o Cliente:</strong></label>
+            <select name="id_cliente" id="id_cliente" required>
+                <option value="">-- Escolha um cliente --</option>
+                {% for cliente in clientes %}
+                <option value="{{ cliente.id }}">{{ cliente.nome }} (CPF: {{ cliente.cpf }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <h3>Carrinho de Compras</h3>
+        <table class="table" id="tabelaCarrinho">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço Unitário</th>
+                    <th>Quantidade</th>
+                    <th>Subtotal</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Produtos adicionados via JS vão aparecer aqui -->
+            </tbody>
+        </table>
+        
+        <div id="hiddenInputs"></div>
+
+        <h4 class="total-compra">Total da Compra: R$ <span id="spanTotal">0.00</span></h4>
+        
+        <div class="form-actions">
+            <button type="submit" id="btnFinalizar" class="btn btn-primary">Finalizar Compra</button>
+        </div>
+    </form>
+</main>
+
+<script src="{{ url_for('static', filename='js/registrar_compra.js') }}"></script>
+{% endblock %}
