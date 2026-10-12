@@ -14,4 +14,10 @@ app.config["OPENAPI_VERSION"] = "3.0.3"
 db = SQLAlchemy(app)
 api = Api(app)
 
-import route
+from . import route
+
+app.add_url_rule("/", view_func=route.pagina_inicial)
+
+from .routes.animaisRoute import blp
+
+api.register_blueprint(blp)

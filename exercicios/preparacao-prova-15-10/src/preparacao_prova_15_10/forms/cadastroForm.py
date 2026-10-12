@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, StringField, IntegerField, FloatField
+from wtforms import SubmitField, StringField, FloatField
 from wtforms.validators import DataRequired, Length
 
 class CadastroForm(FlaskForm):
