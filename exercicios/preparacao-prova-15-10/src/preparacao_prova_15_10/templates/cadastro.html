@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de animais</title>
+</head>
+<body>
+    <h1>Cadastre o animal</h1>
+    <form action="POST">
+        {{ form.hidden_tag() }}
+        <label>{{ form.nome.label.text }}</label>
+        {{ form.nome(id="campo-nome") }}
+
+        <label>{{ form.raca.label.text }}</label>
+        {{ form.raca(id="campo-raca") }}
+
+        <label>{{ form.peso.label.text }}</label>
+        {{ form.peso(id="campo-peso") }}
+
+        <label>{{ form.sexo.label.text }}</label>
+        {{ form.sexo(id="campo-sexo") }}
+
+        {{ form.submit(id="btn-cadastrar") }}
+    </form>
+</body>
+</html>

@@ -1,6 +1,8 @@
 from app import app
 from flask import render_template
+from forms.cadastroForm import CadastroForm
 
 @app.route("/")
 def pagina_inicial():
-    return render_template("index.html")
+    cadastroForm = CadastroForm()
+    return render_template("cadastro.html", form=cadastroForm)
