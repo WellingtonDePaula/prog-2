@@ -1,11 +1,11 @@
 from ..app import db
 
 class Animal(db.Model):
-    Id = db.Column(db.Integer, primary_key=True)
-    Nome = db.Column(db.String(100), nullable=False)
-    Raca = db.Column(db.String(200), nullable=False)
-    Peso = db.Column(db.Float, nullable=False)
-    Sexo = db.Column(db.String(1), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    raca = db.Column(db.String(200), nullable=False)
+    peso = db.Column(db.Float, nullable=False)
+    sexo = db.Column(db.String(1), nullable=False)
     
     def to_dict(self):
         return {

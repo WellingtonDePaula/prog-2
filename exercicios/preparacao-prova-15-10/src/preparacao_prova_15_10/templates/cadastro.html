@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de animais</title>
+    <script src="{{ url_for('static', filename='js/cadastro.js') }}" defer></script>
 </head>
 <body>
     <h1>Cadastre o animal</h1>
-    <form action="POST">
+
+    <form method="POST" id="form-cadastro" novalidate>
+        <div id="mensagem"></div>
         {{ form.hidden_tag() }}
         <label>{{ form.nome.label.text }}</label>
         {{ form.nome(id="campo-nome") }}
@@ -22,6 +25,7 @@
         {{ form.sexo(id="campo-sexo") }}
 
         {{ form.submit(id="btn-cadastrar") }}
+        <div id="mensagem-erro"></div>
     </form>
 </body>
 </html>

@@ -20,15 +20,15 @@ class Animais(MethodView):
         if (not nome):
             abort(422, message="O nome do animal é obrigatório")
         
-        existente = Animal.query.filter_by(Nome=nome).first()
+        existente = Animal.query.filter_by(nome=nome).first()
         if (existente):
             abort(409, message="Já existe um animal com esse nome")
         
         animal = Animal(
-            Nome=nome,
-            Raca=animal_data["raca"],
-            Peso=animal_data["peso"],
-            Sexo=animal_data["sexo"]
+            nome=nome,
+            raca=animal_data["raca"],
+            peso=animal_data["peso"],
+            sexo=animal_data["sexo"]
         )
         
         db.session.add(animal)
