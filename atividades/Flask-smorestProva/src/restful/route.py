@@ -1,6 +1,6 @@
 from flask import render_template
 from forms import BuscaForm, CadastroForm, EdicaoForm
-from app import app
+from app import app, get_locale
 
 @app.route("/")
 def pagina_cadastro():

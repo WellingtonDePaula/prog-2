@@ -37,6 +37,5 @@ api.register_blueprint(items_blueprint)
 api.register_blueprint(blp_atualizar)
 
 
-
 import route
 
