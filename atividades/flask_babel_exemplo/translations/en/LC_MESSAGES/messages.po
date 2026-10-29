@@ -1,0 +1,52 @@
+#: app.py:30
+msgid "Teste index"
+msgstr "Index test!"
+
+#: app.py:35
+msgid "Teste sobre!"
+msgstr "About test!"
+
+msgid "Início"
+msgstr "Home"
+
+msgid "Sobre"
+msgstr "About"
+
+msgid "Idioma"
+msgstr "Language"
+
+msgid "Bem-vindo ao nosso site multilíngue!"
+msgstr "Welcome to our multilingual website!"
+
+msgid "Esta é a página inicial. Você pode alternar entre Português e Inglês usando o menu no canto superior direito."
+msgstr "This is the home page. You can toggle between Portuguese and English using the menu in the top right corner."
+
+msgid "Clique aqui para entender como este site foi construído."
+msgstr "Click here to understand how this site was built."
+
+msgid "Sobre este Projeto"
+msgstr "About this Project"
+
+msgid "Como este site foi construído?"
+msgstr "How was this site built?"
+
+msgid "Este site foi desenvolvido com Python e Flask utilizando a extensão Flask-Babel para suporte a internacionalização (i18n)."
+msgstr "This website was developed with Python and Flask using the Flask-Babel extension for internationalization (i18n) support."
+
+msgid "Framework Web"
+msgstr "Web Framework"
+
+msgid "Gerenciador de Idiomas"
+msgstr "Language Manager"
+
+msgid "Mecanismo de Seleção"
+msgstr "Selection Mechanism"
+
+msgid "O idioma selecionado é armazenado na sessão do usuário (`session['lang']`). Se não houver seleção prévia, o sistema identifica automaticamente o idioma preferido do navegador do visitante."
+msgstr "The selected language is stored in the user's session (`session['lang']`). If no prior selection exists, the system automatically detects the visitor's browser preferred language."
+
+msgid "Tradução de Conteúdo"
+msgstr "Content Translation"
+
+msgid "Todos os textos do Jinja2 são encapsulados na função `_('...')`. O Babel extrai essas strings para arquivos `.po`, que são traduzidos e depois compilados para arquivos binários `.mo` para rápida execução."
+msgstr "All Jinja2 text strings are wrapped in the `_('...')` function. Babel extracts these strings into `.po` files, which are translated and then compiled into binary `.mo` files for fast execution."

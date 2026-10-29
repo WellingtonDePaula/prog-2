@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Sobre') }}{% endblock %}
+
+{% block content %}
+    <h1>{{ _('Sobre este Projeto') }}</h1>
+    
+    <h2>{{ _('Como este site foi construído?') }}</h2>
+    <p>{{ _('Este site foi desenvolvido com Python e Flask utilizando a extensão Flask-Babel para suporte a internacionalização (i18n).') }}</p>
+    
+    <ul>
+        <li><strong>{{ _('Framework Web') }}:</strong> Flask</li>
+        <li><strong>{{ _('Gerenciador de Idiomas') }}:</strong> Flask-Babel (GNU gettext)</li>
+        <li><strong>{{ _('Mecanismo de Seleção') }}:</strong> {{ _('O idioma selecionado é armazenado na sessão do usuário (`session[\'lang\']`). Se não houver seleção prévia, o sistema identifica automaticamente o idioma preferido do navegador do visitante.') }}</li>
+        <li><strong>{{ _('Tradução de Conteúdo') }}:</strong> {{ _('Todos os textos do Jinja2 são encapsulados na função `_(\'...\')`. O Babel extrai essas strings para arquivos `.po`, que são traduzidos e depois compilados para arquivos binários `.mo` para rápida execução.') }}</li>
+    </ul>
+{% endblock %}

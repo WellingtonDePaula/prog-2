@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="{{ get_locale() }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %} - Site Multilíngue</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        nav { margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #0066cc; }
+        .lang-switch { float: right; }
+        .lang-switch a { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{{ url_for('index') }}">{{ _('Início') }}</a>
+        <a href="{{ url_for('sobre') }}">{{ _('Sobre') }}</a>
+
+        <span class="lang-switch">
+            🌐 {{ _('Idioma') }}:
+            <a href="{{ url_for('mudar_idioma', lang='pt') }}">PT</a> |
+            <a href="{{ url_for('mudar_idioma', lang='en') }}">EN</a>
+        </span>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,94 @@
+# English translations for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-10-28 22:15-0300\n"
+"PO-Revision-Date: 2026-10-28 22:15-0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app.py:31
+msgid "Teste!"
+msgstr ""
+
+#: templates/base.html:16 templates/index.html:3
+msgid "Início"
+msgstr ""
+
+#: templates/base.html:17 templates/sobre.html:3
+msgid "Sobre"
+msgstr ""
+
+#: templates/base.html:20
+msgid "Idioma"
+msgstr ""
+
+#: templates/index.html:6
+msgid "Bem-vindo ao nosso site multilíngue!"
+msgstr ""
+
+#: templates/index.html:7
+msgid ""
+"Esta é a página inicial. Você pode alternar entre Português e Inglês "
+"usando o menu no canto superior direito."
+msgstr ""
+
+#: templates/index.html:8
+msgid "Clique aqui para entender como este site foi construído."
+msgstr ""
+
+#: templates/sobre.html:6
+msgid "Sobre este Projeto"
+msgstr ""
+
+#: templates/sobre.html:8
+msgid "Como este site foi construído?"
+msgstr ""
+
+#: templates/sobre.html:9
+msgid ""
+"Este site foi desenvolvido com Python e Flask utilizando a extensão "
+"Flask-Babel para suporte a internacionalização (i18n)."
+msgstr ""
+
+#: templates/sobre.html:12
+msgid "Framework Web"
+msgstr ""
+
+#: templates/sobre.html:13
+msgid "Gerenciador de Idiomas"
+msgstr ""
+
+#: templates/sobre.html:14
+msgid "Mecanismo de Seleção"
+msgstr ""
+
+#: templates/sobre.html:14
+msgid ""
+"O idioma selecionado é armazenado na sessão do usuário "
+"(`session['lang']`). Se não houver seleção prévia, o sistema identifica "
+"automaticamente o idioma preferido do navegador do visitante."
+msgstr ""
+
+#: templates/sobre.html:15
+msgid "Tradução de Conteúdo"
+msgstr ""
+
+#: templates/sobre.html:15
+msgid ""
+"Todos os textos do Jinja2 são encapsulados na função `_('...')`. O Babel "
+"extrai essas strings para arquivos `.po`, que são traduzidos e depois "
+"compilados para arquivos binários `.mo` para rápida execução."
+msgstr ""
+

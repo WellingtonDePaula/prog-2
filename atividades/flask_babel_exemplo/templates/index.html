@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Início') }}{% endblock %}
+
+{% block content %}
+    <h1>{{ _('Bem-vindo ao nosso site multilíngue!') }}</h1>
+    <p>{{ _('Esta é a página inicial. Você pode alternar entre Português e Inglês usando o menu no canto superior direito.') }}</p>
+    <p><a href="{{ url_for('sobre') }}">{{ _('Clique aqui para entender como este site foi construído.') }}</a></p>
+    {{teste}}
+{% endblock %}
