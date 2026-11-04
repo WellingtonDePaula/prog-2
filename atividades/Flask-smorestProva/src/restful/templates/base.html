@@ -2,7 +2,22 @@
 <html lang="{{ get_locale() }}">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %} - Site Multilíngue</title>
+    <title>{% block title %}{% endblock %} - {{ _('Site Multilíngue') }}</title>
+    <script>
+        window.appTranslations = {{ {
+            "nameRequired": _("O nome é obrigatório."),
+            "minimumValue": _("Valor mínimo: 0"),
+            "itemCreated": _('Item "%(name)s" cadastrado com sucesso!', name="__ITEM_NAME__"),
+            "registerError": _("Erro ao cadastrar."),
+            "connectionError": _("Erro de conexão."),
+            "searchMinLength": _("Digite ao menos 3 letras."),
+            "confirmDelete": _("Tem certeza que deseja excluir este item?"),
+            "deleteError": _("Erro ao deletar."),
+            "itemUpdated": _("Item atualizado com sucesso."),
+            "updateError": _("Erro ao atualizar."),
+            "updateConnectionError": _("Erro de conexão ao atualizar o item.")
+        } | tojson }};
+    </script>
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
         nav { margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px; }

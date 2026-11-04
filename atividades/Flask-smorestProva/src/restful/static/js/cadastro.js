@@ -15,15 +15,15 @@ document.getElementById("form-cadastro").addEventListener("submit", async (e) =>
   /* ── Validação client-side espelhando WTForms ── */
   let valido = true;
   if (!nome) {
-    document.getElementById("erro-nome").textContent = "O nome é obrigatório.";
+    document.getElementById("erro-nome").textContent = window.appTranslations.nameRequired;
     valido = false;
   }
   if (quantidade !== "" && Number(quantidade) < 0) {
-    document.getElementById("erro-quantidade").textContent = "Valor mínimo: 0";
+    document.getElementById("erro-quantidade").textContent = window.appTranslations.minimumValue;
     valido = false;
   }
   if (valor !== "" && Number(valor) < 0) {
-    document.getElementById("erro-valor").textContent = "Valor mínimo: 0";
+    document.getElementById("erro-valor").textContent = window.appTranslations.minimumValue;
     valido = false;
   }
   if (!valido) return;
@@ -44,14 +44,14 @@ document.getElementById("form-cadastro").addEventListener("submit", async (e) =>
 
     if (res.ok) {
       msg.className = "msg ok";
-      msg.textContent = `Item "${data.nome}" cadastrado com sucesso!`;
+      msg.textContent = window.appTranslations.itemCreated.replace("__ITEM_NAME__", data.nome);
       document.getElementById("form-cadastro").reset();
     } else {
       msg.className = "msg err";
-      msg.textContent = data.erro || "Erro ao cadastrar.";
+      msg.textContent = data.erro || window.appTranslations.registerError;
     }
   } catch (err) {
     msg.className = "msg err";
-    msg.textContent = "Erro de conexão.";
+    msg.textContent = window.appTranslations.connectionError;
   }
 });

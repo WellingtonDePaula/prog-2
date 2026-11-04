@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 
+{% block title %}{{ _("Cadastro de Item") }}{% endblock %}
+
 {% block content %}
 
-  <h2>Cadastrar Item</h2>
+  <h2>{{ _("Cadastrar Item") }}</h2>
 
   <form id="form-cadastro" method="post" novalidate>
     {{ form.hidden_tag() }}
@@ -23,7 +25,7 @@
   </form>
 
   <div id="mensagem"></div>
-  <a href="/consulta">Ir para Consulta →</a>
+  <a href="{{ url_for('pagina_consulta') }}">{{ _("Ir para Consulta →") }}</a>
 
   <script src="{{ url_for('static', filename='js/cadastro.js') }}"></script>
 

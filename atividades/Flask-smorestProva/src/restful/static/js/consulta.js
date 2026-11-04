@@ -11,7 +11,7 @@ async function autocompletar () {
     lista.classList.add("hidden");
     lista.innerHTML = "";
     if (termo.length > 0) {
-      erro.textContent = "Digite ao menos 3 letras";
+      erro.textContent = window.appTranslations.searchMinLength;
     }
     return;
   }
@@ -70,15 +70,15 @@ function validarEdicao() {
   const val = document.getElementById("valor").value;
 
   if (!nome) {
-    document.getElementById("erro-nome").textContent = "O nome é obrigatório.";
+    document.getElementById("erro-nome").textContent = window.appTranslations.nameRequired;
     valido = false;
   }
   if (qtd !== "" && Number(qtd) < 0) {
-    document.getElementById("erro-quantidade").textContent = "Valor mínimo: 0";
+    document.getElementById("erro-quantidade").textContent = window.appTranslations.minimumValue;
     valido = false;
   }
   if (val !== "" && Number(val) < 0) {
-    document.getElementById("erro-valor").textContent = "Valor mínimo: 0";
+    document.getElementById("erro-valor").textContent = window.appTranslations.minimumValue;
     valido = false;
   }
   return valido;
@@ -88,7 +88,7 @@ function validarEdicao() {
 /*  Deletar (DELETE) */
 document.getElementById("btn-deletar").addEventListener("click", async (e) => {
   e.preventDefault();
-  if (!confirm("Tem certeza que deseja excluir este item?")) return;
+  if (!confirm(window.appTranslations.confirmDelete)) return;
 
   const id = document.getElementById("item_id").value;
   const msg = document.getElementById("mensagem");
@@ -103,7 +103,7 @@ document.getElementById("btn-deletar").addEventListener("click", async (e) => {
     document.getElementById("busca").value = "";
   } else {
     msg.className = "mt-4 p-3 rounded-lg text-sm bg-red-100 text-red-800";
-    msg.textContent = data.erro || "Erro ao deletar.";
+    msg.textContent = data.erro || window.appTranslations.deleteError;
   }
 });
 
@@ -137,14 +137,14 @@ async function atualizarItem(e) {
 
     if (res.ok) {
       msg.className = "mt-4 p-3 rounded-lg text-sm bg-green-100 text-green-800";
-      msg.textContent = "Item atualizado com sucesso.";
+      msg.textContent = window.appTranslations.itemUpdated;
       document.getElementById("busca").value = data.nome;
     } else {
       msg.className = "mt-4 p-3 rounded-lg text-sm bg-red-100 text-red-800";
-      msg.textContent = data.message || "Erro ao atualizar.";
+      msg.textContent = data.message || window.appTranslations.updateError;
     }
   } catch (err) {
     msg.className = "mt-4 p-3 rounded-lg text-sm bg-red-100 text-red-800";
-    msg.textContent = "Erro de conexão ao atualizar o item.";
+    msg.textContent = window.appTranslations.updateConnectionError;
   }
 }
