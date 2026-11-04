@@ -6,7 +6,7 @@ from app import app, get_locale
 def mudar_idioma(lang):
     if lang in app.config['BABEL_SUPPORTED_LOCALES']:
         session['lang'] = lang
-    return redirect(request.referrer or url_for('index'))
+    return redirect(request.referrer or url_for('pagina_cadastro'))
 
 @app.route("/")
 def pagina_cadastro():

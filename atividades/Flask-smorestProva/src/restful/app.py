@@ -17,7 +17,7 @@ app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger-ui"
 app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
 
 # Configurações do flask-babel
-app.config['BABEL_DEFAULT_LOCALE'] = 'pt'
+app.config['BABEL_DEFAULT_LOCALE'] = 'ru'
 app.config['BABEL_SUPPORTED_LOCALES'] = ['pt', 'en', 'ru']
 app.config["BABEL_TRANSLATION_DIRECTORIES"] = "../../app/translations"
 
@@ -38,4 +38,3 @@ api.register_blueprint(blp_atualizar)
 
 
 import route
-
