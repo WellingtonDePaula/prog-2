@@ -5,7 +5,7 @@ from app import app, get_locale
 @app.route("/")
 def pagina_cadastro():
     form = CadastroForm()
-    return render_template("cadastro.html", form=form)
+    return render_template("cadastro.html", form=form, get_locale=get_locale)
 
 @app.route("/consulta")
 def pagina_consulta():
@@ -13,7 +13,8 @@ def pagina_consulta():
     edicao_form = EdicaoForm()
     return render_template("consulta.html",
                             busca_form=busca_form,
-                            edicao_form=edicao_form
+                            edicao_form=edicao_form,
+                            get_locale=get_locale
                           )
 
 """
