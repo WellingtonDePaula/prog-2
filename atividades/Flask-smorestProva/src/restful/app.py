@@ -18,7 +18,7 @@ app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-
 
 # Configurações do flask-babel
 app.config['BABEL_DEFAULT_LOCALE'] = 'pt'
-app.config['BABEL_SUPPORTED_LOCALES'] = ['pt', 'en']
+app.config['BABEL_SUPPORTED_LOCALES'] = ['pt', 'en', 'ru']
 
 
 db = SQLAlchemy(app)
