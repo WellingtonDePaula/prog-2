@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-04 10:39-0300\n"
+"POT-Creation-Date: 2026-11-04 11:17-0300\n"
 "PO-Revision-Date: 2026-11-04 10:40-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,27 +19,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: src/restful/forms.py:7 src/restful/forms.py:33
+#: src/restful/api_routes.py:51 src/restful/api_routes.py:101
+#: src/restful/api_routes.py:109 src/restful/api_routes.py:135
+msgid "Item não encontrado."
+msgstr "Элемент не найден."
+
+#: src/restful/api_routes.py:55 src/restful/api_routes.py:117
+#: src/restful/forms.py:8 src/restful/forms.py:41
+#: src/restful/templates/base.html:8
+msgid "O nome é obrigatório."
+msgstr "Имя обязательно."
+
+#: src/restful/api_routes.py:59 src/restful/api_routes.py:123
+msgid "Já existe um item com esse nome."
+msgstr "Элемент с таким именем уже существует."
+
+#: src/restful/api_routes.py:86
+msgid "Item já cadastrado."
+msgstr "Элемент уже зарегистрирован."
+
+#: src/restful/api_routes.py:112
+msgid "Informe ao menos um campo para atualizar."
+msgstr "Укажите хотя бы одно поле для обновления."
+
+#: src/restful/api_routes.py:138
+msgid "Item removido com sucesso."
+msgstr "Элемент успешно удален."
+
+#: src/restful/forms.py:7 src/restful/forms.py:39
 msgid "Nome"
 msgstr "Имя"
 
-#: src/restful/forms.py:8
-msgid "O nome é obrigatório."
-msgstr "Имя обязательно."
+#: src/restful/forms.py:9 src/restful/forms.py:42
+msgid "O nome deve ter entre 1 e 120 caracteres."
+msgstr "Имя должно содержать от 1 до 120 символов."
 
 #: src/restful/forms.py:10
 msgid "Nome do item"
 msgstr "Название элемента"
 
-#: src/restful/forms.py:12 src/restful/forms.py:36
+#: src/restful/forms.py:12 src/restful/forms.py:45
 msgid "Quantidade"
 msgstr "Количество"
 
-#: src/restful/forms.py:13
+#: src/restful/forms.py:13 src/restful/forms.py:18 src/restful/forms.py:46
+#: src/restful/forms.py:50 src/restful/templates/base.html:9
 msgid "Valor mínimo: 0"
 msgstr "Минимальное значение: 0"
 
-#: src/restful/forms.py:17 src/restful/forms.py:40
+#: src/restful/forms.py:17 src/restful/forms.py:49
 msgid "Valor (R$)"
 msgstr "Цена (R$)"
 
@@ -51,22 +79,95 @@ msgstr "Добавить"
 msgid "Buscar item"
 msgstr "Найти элемент"
 
-#: src/restful/forms.py:44
+#: src/restful/forms.py:28
+msgid "O termo de busca é obrigatório."
+msgstr "Поисковый запрос обязателен."
+
+#: src/restful/forms.py:29 src/restful/templates/base.html:13
+msgid "Digite ao menos 3 letras."
+msgstr "Введите не менее 3 символов."
+
+#: src/restful/forms.py:33
+msgid "Mínimo 3 letras"
+msgstr "Не менее 3 символов"
+
+#: src/restful/forms.py:53
 msgid "Atualizar"
 msgstr "Обновить"
 
-#: src/restful/forms.py:45
+#: src/restful/forms.py:54
 msgid "Deletar"
 msgstr "Удалить"
 
-#: src/restful/templates/consulta.html:6
+#: src/restful/templates/base.html:5
+msgid "Site Multilíngue"
+msgstr "Многоязычный сайт"
+
+#: src/restful/templates/base.html:10
+#, python-format
+msgid "Item \"%(name)s\" cadastrado com sucesso!"
+msgstr "Элемент \"%(name)s\" успешно добавлен!"
+
+#: src/restful/templates/base.html:11
+msgid "Erro ao cadastrar."
+msgstr "Ошибка при добавлении элемента."
+
+#: src/restful/templates/base.html:12
+msgid "Erro de conexão."
+msgstr "Ошибка соединения."
+
+#: src/restful/templates/base.html:14
+msgid "Tem certeza que deseja excluir este item?"
+msgstr "Вы уверены, что хотите удалить этот элемент?"
+
+#: src/restful/templates/base.html:15
+msgid "Erro ao deletar."
+msgstr "Ошибка при удалении элемента."
+
+#: src/restful/templates/base.html:16
+msgid "Item atualizado com sucesso."
+msgstr "Элемент успешно обновлен."
+
+#: src/restful/templates/base.html:17
+msgid "Erro ao atualizar."
+msgstr "Ошибка при обновлении элемента."
+
+#: src/restful/templates/base.html:18
+msgid "Erro de conexão ao atualizar o item."
+msgstr "Ошибка соединения при обновлении элемента."
+
+#: src/restful/templates/base.html:31
+msgid "Cadastro"
+msgstr "Добавление"
+
+#: src/restful/templates/base.html:32
+msgid "Consulta"
+msgstr "Просмотр"
+
+#: src/restful/templates/base.html:35
+msgid "Idioma"
+msgstr "Язык"
+
+#: src/restful/templates/cadastro.html:3
+msgid "Cadastro de Item"
+msgstr "Добавление элемента"
+
+#: src/restful/templates/cadastro.html:7
+msgid "Cadastrar Item"
+msgstr "Добавить элемент"
+
+#: src/restful/templates/cadastro.html:28
+msgid "Ir para Consulta →"
+msgstr "Перейти к просмотру →"
+
+#: src/restful/templates/consulta.html:3
 msgid "Consulta de Itens"
 msgstr "Просмотр элементов"
 
-#: src/restful/templates/consulta.html:11
+#: src/restful/templates/consulta.html:7
 msgid "Consultar / Editar Item"
 msgstr "Просмотр / Редактирование элемента"
 
-#: src/restful/templates/consulta.html:69
+#: src/restful/templates/consulta.html:65
 msgid "Voltar ao Cadastro"
 msgstr "Вернуться к добавлению"

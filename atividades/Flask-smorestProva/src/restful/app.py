@@ -19,6 +19,7 @@ app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-
 # Configurações do flask-babel
 app.config['BABEL_DEFAULT_LOCALE'] = 'pt'
 app.config['BABEL_SUPPORTED_LOCALES'] = ['pt', 'en', 'ru']
+app.config["BABEL_TRANSLATION_DIRECTORIES"] = "../../app/translations"
 
 db = SQLAlchemy(app)
 
@@ -27,7 +28,7 @@ api = Api(app)
 def get_locale():
     if ('lang' in session and session['lang'] in app.config['BABEL_SUPPORTED_LOCALES']):
         return session['lang']
-    return request.accept_languages.best_match(app.config['BABEL_SUPPORTED_LOCALES'])
+    return request.accept_languages.best_match(app.config['BABEL_SUPPORTED_LOCALES']) or app.config['BABEL_DEFAULT_LOCALE']
 
 babel = Babel(app, locale_selector=get_locale)
 
