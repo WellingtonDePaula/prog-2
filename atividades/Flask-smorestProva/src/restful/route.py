@@ -1,6 +1,12 @@
-from flask import render_template
+from flask import render_template, redirect, request, url_for, session
 from forms import BuscaForm, CadastroForm, EdicaoForm
 from app import app, get_locale
+
+@app.route('/mudar-idioma/<lang>')
+def mudar_idioma(lang):
+    if lang in app.config['BABEL_SUPPORTED_LOCALES']:
+        session['lang'] = lang
+    return redirect(request.referrer or url_for('index'))
 
 @app.route("/")
 def pagina_cadastro():

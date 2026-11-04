@@ -21,53 +21,52 @@ msgstr ""
 
 #: src/restful/forms.py:7 src/restful/forms.py:33
 msgid "Nome"
-msgstr ""
+msgstr "Имя"
 
 #: src/restful/forms.py:8
 msgid "O nome é obrigatório."
-msgstr ""
+msgstr "Имя обязательно."
 
 #: src/restful/forms.py:10
 msgid "Nome do item"
-msgstr ""
+msgstr "Название элемента"
 
 #: src/restful/forms.py:12 src/restful/forms.py:36
 msgid "Quantidade"
-msgstr ""
+msgstr "Количество"
 
 #: src/restful/forms.py:13
 msgid "Valor mínimo: 0"
-msgstr ""
+msgstr "Минимальное значение: 0"
 
 #: src/restful/forms.py:17 src/restful/forms.py:40
 msgid "Valor (R$)"
-msgstr ""
+msgstr "Цена (R$)"
 
 #: src/restful/forms.py:22
 msgid "Cadastrar"
-msgstr ""
+msgstr "Добавить"
 
 #: src/restful/forms.py:26
 msgid "Buscar item"
-msgstr ""
+msgstr "Найти элемент"
 
 #: src/restful/forms.py:44
 msgid "Atualizar"
-msgstr ""
+msgstr "Обновить"
 
 #: src/restful/forms.py:45
 msgid "Deletar"
-msgstr ""
+msgstr "Удалить"
 
 #: src/restful/templates/consulta.html:6
 msgid "Consulta de Itens"
-msgstr ""
+msgstr "Просмотр элементов"
 
 #: src/restful/templates/consulta.html:11
 msgid "Consultar / Editar Item"
-msgstr ""
+msgstr "Просмотр / Редактирование элемента"
 
 #: src/restful/templates/consulta.html:69
 msgid "Voltar ao Cadastro"
-msgstr ""
-
+msgstr "Вернуться к добавлению"

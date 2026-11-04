@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-11-04 10:39-0300\n"
-"PO-Revision-Date: 2026-11-04 10:39-0300\n"
+"PO-Revision-Date: 2026-11-04 10:40-0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
 "Language-Team: en <LL@li.org>\n"
@@ -20,53 +20,52 @@ msgstr ""
 
 #: src/restful/forms.py:7 src/restful/forms.py:33
 msgid "Nome"
-msgstr ""
+msgstr "Name"
 
 #: src/restful/forms.py:8
 msgid "O nome é obrigatório."
-msgstr ""
+msgstr "Name is required."
 
 #: src/restful/forms.py:10
 msgid "Nome do item"
-msgstr ""
+msgstr "Item name"
 
 #: src/restful/forms.py:12 src/restful/forms.py:36
 msgid "Quantidade"
-msgstr ""
+msgstr "Quantity"
 
 #: src/restful/forms.py:13
 msgid "Valor mínimo: 0"
-msgstr ""
+msgstr "Minimum value: 0"
 
 #: src/restful/forms.py:17 src/restful/forms.py:40
 msgid "Valor (R$)"
-msgstr ""
+msgstr "Price (R$)"
 
 #: src/restful/forms.py:22
 msgid "Cadastrar"
-msgstr ""
+msgstr "Register"
 
 #: src/restful/forms.py:26
 msgid "Buscar item"
-msgstr ""
+msgstr "Search item"
 
 #: src/restful/forms.py:44
 msgid "Atualizar"
-msgstr ""
+msgstr "Update"
 
 #: src/restful/forms.py:45
 msgid "Deletar"
-msgstr ""
+msgstr "Delete"
 
 #: src/restful/templates/consulta.html:6
 msgid "Consulta de Itens"
-msgstr ""
+msgstr "Item Lookup"
 
 #: src/restful/templates/consulta.html:11
 msgid "Consultar / Editar Item"
-msgstr ""
+msgstr "View / Edit Item"
 
 #: src/restful/templates/consulta.html:69
 msgid "Voltar ao Cadastro"
-msgstr ""
-
+msgstr "Back to Registration"

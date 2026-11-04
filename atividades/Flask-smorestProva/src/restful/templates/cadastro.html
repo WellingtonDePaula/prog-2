@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Cadastro de Itens</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
+
   <h2>Cadastrar Item</h2>
 
   <form id="form-cadastro" method="post" novalidate>
@@ -30,5 +26,5 @@
   <a href="/consulta">Ir para Consulta →</a>
 
   <script src="{{ url_for('static', filename='js/cadastro.js') }}"></script>
-</body>
-</html>
+
+{% endblock content %}
