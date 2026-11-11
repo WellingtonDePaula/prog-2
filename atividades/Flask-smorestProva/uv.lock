@@ -91,6 +91,19 @@ wheels = [
 ]
 
 [[package]]
+name = "flask-babel-js"
+version = "1.0.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flask" },
+    { name = "flask-babel" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/96/55/22b9ccc3959f47c33f045ec630be7aa9098610101868312c35fa575b8f46/flask_babel_js-1.0.3.tar.gz", hash = "sha256:75d56ff4c1f053f423ff788eaf9e2fab8f3da109418ad045550c337afb2a40c9", size = 14105, upload-time = "2024-12-30T20:29:44.254Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/56/70/f120bc46fa9933267516e276c5d5740b760d043802c8a0803a709a8cc1a0/flask_babel_js-1.0.3-py3-none-any.whl", hash = "sha256:47c643f58d377ffc735f861930d843d97277b7bec361335b1fbf96679b34935e", size = 5645, upload-time = "2024-12-30T20:29:42.923Z" },
+]
+
+[[package]]
 name = "flask-smorest"
 version = "0.47.0"
 source = { registry = "https://pypi.org/simple" }
@@ -257,6 +270,7 @@ source = { editable = "." }
 dependencies = [
     { name = "flask" },
     { name = "flask-babel" },
+    { name = "flask-babel-js" },
     { name = "flask-smorest" },
     { name = "flask-sqlalchemy" },
     { name = "flask-wtf" },
@@ -266,6 +280,7 @@ dependencies = [
 requires-dist = [
     { name = "flask", specifier = ">=3.1.3" },
     { name = "flask-babel", specifier = ">=4.0.0" },
+    { name = "flask-babel-js", specifier = ">=1.0.3" },
     { name = "flask-smorest", specifier = ">=0.47.0" },
     { name = "flask-sqlalchemy", specifier = ">=3.1.1" },
     { name = "flask-wtf", specifier = ">=1.3.0" },
